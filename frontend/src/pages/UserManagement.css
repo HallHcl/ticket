@@ -1,430 +1,127 @@
-.table-auto {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .border-collapse {
-    border-spacing: 0;
-  }
-  
-  .border {
-    border: 1px solid #ccc;
-  }
-  
-  .p-2 {
-    padding: 0.5rem;
-  }
-  
-  .text-red-500 {
-    color: #f56565;
-  }
-  
-  .text-2xl {
-    font-size: 1.5rem;
-  }
-
-/* Modern Minimal Admin Dashboard Styles */
-:root {
-  --primary-color: #3498db;
-  --secondary-color: #2ecc71;
-  --accent-color: #f1c40f;
-  --danger-color: #e74c3c;
-  --text-dark: #2c3e50;
-  --text-light: #7f8c8d;
-  --bg-light: #f8f9fa;
-  --bg-white: #ffffff;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --border-radius: 8px;
-  --transition: all 0.3s ease;
-}
-
-.header-search {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-.search-bar input {
-  width: 300px;
-  padding: 8px;
-}
-
-
-.admin-dashboard {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
-  color: var(--text-dark);
-  background-color: var(--bg-light);
+.user-management-container {
   min-height: 100vh;
-}
-
-/* Header Styles */
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.dashboard-header h1 {
-  font-size: 28px;
-  font-weight: 500;
-  margin: 0;
-  color: var(--primary-color);
-}
-
-.header-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.refresh-btn {
-  background-color: var(--bg-white);
-  border: 1px solid var(--primary-color);
-  color: var(--primary-color);
-  padding: 8px 16px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: 14px;
-  transition: var(--transition);
-}
-
-.refresh-btn:hover {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-/* Stats Section */
-.dashboard-stats {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 32px;
-}
-
-.dashboard-stats p {
-  color: var(--primary-color);
-}
-
-.stat-card {
-  background-color: var(--bg-white);
-  padding: 24px;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  flex: 1;
-  text-align: center;
-  transition: var(--transition);
-}
-
-.stat-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.stat-number {
-  font-size: 36px;
-  font-weight: bold;
-  color: var(--primary-color);
-  margin: 0;
-}
-
-/* Tickets Section */
-.tickets-section {
-  background-color: var(--bg-white);
-  padding: 24px;
-  border-radius: var (--border-radius);
-  box-shadow: var(--shadow);
-}
-
-.tickets-section h2 {
-  font-size: 20px;
-  margin-top: 0;
-  margin-bottom: 24px;
-  font-weight: 500;
-}
-
-.tickets-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
-}
-
-.ticket-card {
-  border-radius: var(--border-radius);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  transition: var(--transition);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.ticket-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow);
-}
-
-.ticket-header {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background-color: rgba(52, 152, 219, 0.1);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.header-normal {
-  background-color: #3e9adb;
-  color: #000000; /* ฟ้า */
-}
-
-.header-warning {
-  background-color: #e65a09;
-  color: white;
-}
-
-.header-danger {
-  background-color: #ff0015;
-  color: white;
-}
-
-.issue-type {
-  font-weight: bold;
-  color: var(--primary-color);
-}
-
-.issue-type.header-normal {
-  color: #ffffff; /* ฟ้า */
-}
-
-.issue-type.header-warning {
-  color: #ffffff; /* ส้มเข้ม */
-}
-
-.issue-type.header-danger {
-  color: white;
-}
-
-.header-completed {
-  background-color: #28a745; /* Bootstrap-like green */
-  color: #ffffff; /* ตัดกับพื้นหลัง */
-}
-
-.ticket-header.header-completed {
-  border-bottom: 2px solid #1e7e34;
-}
-
-.issue-type.header-completed {
-  font-weight: bold;
-  text-shadow: 0px 0px 2px rgba(0,0,0,0.3);
-}
-
-
-.ticket-date {
-  color: #ffffff; /* ส้มเข้ม */
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.ticket-content {
-  padding: 16px;
-  flex-grow: 1;
-}
-
-.ticket-info {
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.info-label {
-  font-weight: 500;
-  color: var(--text-light);
-  font-size: 14px;
-}
-
-.info-value {
-  color: var(--text-dark);
-}
-
-.ticket-details {
-  margin-top: 16px;
-}
-
-.ticket-details p {
-  margin: 8px 0 0;
-  line-height: 1.5;
-  color: var(--text-dark);
-}
-
-/* ปรับแต่ง Select Box */
-.ticket-footer select {
-  background-color: transparent; /* ให้พื้นหลังโปร่งใส */
-  border: 1px solid #ddd; /* ขอบเส้นบางๆ */
-  border-radius: 8px; /* ให้ขอบมุมมน */
-  padding: 8px 12px; /* เพิ่มช่องว่างภายใน */
-  font-size: 14px; /* ขนาดตัวอักษร */
-  font-family: 'Arial', sans-serif; /* ใช้ฟอนต์ที่ดูมินิมอล */
-  color: #333; /* สีตัวอักษร */
-  appearance: none; /* เอาการแสดงผลดีฟอลต์ของบราวเซอร์ออก */
-  outline: none; /* เอาขอบเมื่อเลือก */
-  width: 100%; /* ทำให้ขยายเต็มพื้นที่ */
-  transition: border-color 0.3s ease; /* เพิ่มการเปลี่ยนสีเมื่อ hover */
-}
-
-/* เพิ่มสีเมื่อ hover หรือ focus */
-.ticket-footer select:focus {
-  border-color: #007bff; /* เปลี่ยนสีขอบเป็นสีน้ำเงิน */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* เพิ่มเงานิดๆ เมื่อเลือก */
-}
-
-
-
-.ticket-footer {
-  padding: 12px 16px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* ปรับแต่งให้ให้ dropdown arrow สวยงาม */
-.ticket-footer::after {
-
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 12px;
-  color: #666;
-  pointer-events: none;
-}
-
-.action-btn {
-  background-color: transparent;
-  color: var(--primary-color);
-  border: none;
-  padding: 8px 12px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: 14px;
-  transition: var(--transition);
-}
-
-.action-btn:hover {
-  background-color: rgba(52, 152, 219, 0.1);
-}
-
-/* Empty State */
-.empty-state {
-  text-align: center;
-  padding: 48px 24px;
-  color: var(--text-light);
-}
-
-/* Loading State */
-.loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background-color: var(--bg-light);
+  background-color: #f9fafb;
 }
 
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 3px solid rgba(52, 152, 219, 0.1);
-  border-top-color: var(--primary-color);
-  animation: spin 1s linear infinite;
+.user-management-content {
+  max-width: 1200px;
+  width: 100%;
+  padding: 24px;
+  margin-bottom: 300px;
+}
+
+.user-management-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2d3748;
   margin-bottom: 16px;
 }
-/* Container ของปุ่ม filter */
-.issue-type-filters {
-  display: flex;
-  justify-content: left;
-  gap: 15px;
-  margin: 20px 0;
 
+.user-count {
+  color: #4a5568;
+  margin-bottom: 8px;
 }
 
-/* ปุ่ม filter */
-.issue-type-filters button {
-  background-color: transparent;
-  border: 2px solid #3498db; /* สีเขียวที่เรียบง่าย */
-  color: #3498db;
-  padding: 8px 20px;
-  font-size: 16px;
-  border-radius: 25px; /* ขอบโค้ง */
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 600;
+.search-input {
+  border: 1px solid #d1d5db;
+  padding: 8px;
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 16px;
 }
 
-/* ปุ่มที่มีการ hover */
-.issue-type-filters button:hover {
-  background-color: #3498db; /* เปลี่ยนพื้นหลังเป็นสีเขียว */
-  color: white;
-  border-color: #3498db;
+.table-container {
+  overflow-x: auto;
 }
 
-/* ปุ่มที่กดแล้ว (active state) */
-.issue-type-filters button:active {
-  transform: scale(0.98); /* ให้ปุ่มเล็กลงเล็กน้อยเมื่อกด */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เงาเบาๆ */
+.user-table {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* ปุ่มที่ถูกเลือก (selected) */
-.issue-type-filters button.selected {
-  background-color: #4CAF50;
-  color: white;
+.table-header {
+  background-color: #f7fafc;
+  color: #4a5568;
 }
 
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.table-row:hover {
+  background-color: #f9fafb;
 }
 
-/* Error State */
-.error-container, .access-denied {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 48px 24px;
+.table-row td,
+.table-header th {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
   text-align: center;
-  background-color: var(--bg-white);
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  margin-top: 64px;
 }
 
-.error-icon, .access-denied-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  display: inline-block;
 }
 
-.error-container h3, .access-denied h2 {
-  margin-top: 0;
-  color: var(--danger-color);
+.status-active {
+  background-color: #c6f6d5;
+  color: #22543d;
 }
 
-.access-denied h2 {
-  color: var(--text-dark);
+.status-inactive {
+  background-color: #fed7d7;
+  color: #742a2a;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.column-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
 }
 
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .tickets-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .dashboard-stats {
-    flex-direction: column;
-  }
-  
-  .admin-dashboard {
-    padding: 16px;
-  }
+.btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* ให้ไอคอนกับข้อความอยู่ตรงกลาง */
+  gap: 6px;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.2s ease-in-out;
+}
+
+
+.btn:hover {
+  filter: brightness(110%);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+}
+
+.btn-accent {
+  background-color: var(--accent-color);
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+}
+
+.capitalize {
+  text-transform: capitalize;
 }

@@ -51,10 +51,14 @@ router.post('/login', async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
+        // ✅ Update lastLogin
+        user.lastLogin = new Date();
+        await user.save();
+
         const token = jwt.sign(
             {
-                id: user._id,               // MongoDB ObjectId
-                userId: user.id,            // <- ID ที่คุณใช้เชื่อมกับ Ticket
+                id: user._id,
+                userId: user.id,
                 username: user.username,
                 role: user.role
             },
@@ -65,7 +69,7 @@ router.post('/login', async (req, res) => {
         res.status(200).json({
             token,
             user: {
-                userId: user.id,            // <--- ส่งกลับให้ frontend ใช้ส่ง ticket
+                userId: user.id,
                 username: user.username,
                 role: user.role
             }
@@ -74,6 +78,7 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Something went wrong' });
     }
 });
+
 
 
 module.exports = router;

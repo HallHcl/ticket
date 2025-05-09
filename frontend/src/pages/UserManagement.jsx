@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import { FaUserShield, FaUser, FaTrash, FaRedo } from 'react-icons/fa';
 import axios from 'axios';
+import NavAdmin from '../components/NavbarAdmin';
 import './UserManagement.css';
+
+
 
 function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -48,17 +52,24 @@ function UserManagement() {
   };
 
   const handleSearch = (e) => {
-    const keyword = e.target.value;
-    setSearchTerm(keyword);
-    const filtered = users.filter(user =>
-      user.name.toLowerCase().includes(keyword.toLowerCase())
-    );
-    setFilteredUsers(filtered);
-  };
+  const keyword = e.target.value;
+  setSearchTerm(keyword);
+  const filtered = users.filter(user =>
+    user.username?.toLowerCase().includes(keyword.toLowerCase())
+  );
+  setFilteredUsers(filtered);
+};
+
 
   const handleRoleChange = async (id, newRole) => {
     try {
-      await axios.put(`/api/users/${id}/role`, { role: newRole });
+      await axios.put(
+        `http://localhost:5000/api/users/${id}/role`,
+        { role: newRole },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+        }
+      );
       fetchUsers(localStorage.getItem('authToken'));
     } catch (err) {
       alert('Failed to change role');
@@ -78,11 +89,20 @@ function UserManagement() {
 
   const handleResetPassword = async (id) => {
     try {
-      await axios.post(`/api/users/${id}/reset-password`);
+      await axios.post(`http://localhost:5000/api/users/${id}/reset-password`);
       alert('Password reset successfully');
     } catch (err) {
       alert('Failed to reset password');
     }
+  };
+
+  const getStatus = (lastLogin) => {
+    if (!lastLogin) return 'Inactive'; // If no lastLogin, consider user as Inactive
+    const lastLoginDate = new Date(lastLogin);
+    const currentDate = new Date();
+    const diffTime = Math.abs(currentDate - lastLoginDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays <= 7 ? 'Active' : 'Inactive'; // Active if used within 7 days
   };
 
   if (loading) {
@@ -115,60 +135,70 @@ function UserManagement() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50" style={{ height: '100vh' }}>
-  <div className="max-w-6xl w-full p-6">
-    <h1 className="text-3xl font-bold mb-4 text-gray-800 ">User Management</h1>
-    <p className="mb-2 text-gray-600">
-      Total Users: <strong>{filteredUsers.length}</strong>
-    </p>
-    <input
-      type="text"
-      placeholder="Search user..."
-      value={searchTerm}
-      onChange={handleSearch}
-      className="border border-gray-300 p-2 mb-4 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-    />
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-300 shadow rounded-lg mx-auto">
+        <NavAdmin>
+    <div className="user-management-container">
+      <div className="user-management-content">
+        <h1 className="user-management-title">User Management</h1>
+        <p className="user-count">
+          Total Users: <strong>{filteredUsers.length}</strong>
+        </p>
+        <input
+          type="text"
+          placeholder="Search user..."
+          value={searchTerm}
+          onChange={handleSearch}
+          className="search-input"
+        />
+    <div className="table-container">
+      <table className="user-table">
         <thead>
-          <tr className="bg-gray-100 text-gray-700">
-            <th className="p-3 border">Email</th>
-            <th className="p-3 border">Role</th>
-            <th className="p-3 border">Actions</th>
+          <tr className="table-header">
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {filteredUsers.map(user => (
-            <tr key={user._id} className="text-center hover:bg-gray-50 transition-colors">
-              <td className="p-3 border">{user.username}</td>
-              <td className="p-3 border capitalize">{user.role}</td>
-              <td className="p-3 border space-x-2">
+            <tr key={user._id} className="table-row">
+              <td>{user.username}</td>
+              <td className="capitalize">{user.role}</td>
+              <td>
+                <span
+                  className={`status-badge ${
+                    getStatus(user.lastLogin) === 'Active' ? 'status-active' : 'status-inactive'
+                  }`}
+                >
+                  {getStatus(user.lastLogin)}
+                </span>
+              </td>
+              <td className="action-buttons column-buttons">
                 <button
                   onClick={() =>
                     handleRoleChange(user._id, user.role === 'admin' ? 'user' : 'admin')
                   }
-                  style={{ backgroundColor: 'var(--primary-color)' }}
-                  className="hover:brightness-110 text-white px-3 py-1 rounded transition duration-200"
+                  className="btn btn-primary"
                 >
+                  {user.role === 'admin' ? <FaUser /> : <FaUserShield />}
                   {user.role === 'admin' ? 'Make User' : 'Make Admin'}
                 </button>
 
                 <button
                   onClick={() => handleResetPassword(user._id)}
-                  style={{ backgroundColor: 'var(--accent-color)' }}
-                  className="hover:brightness-110 text-white px-3 py-1 rounded transition duration-200"
+                  className="btn btn-accent"
                 >
-                  Reset
+                  <FaRedo /> Reset
                 </button>
 
                 <button
                   onClick={() => handleDelete(user._id)}
-                  style={{ backgroundColor: 'var(--danger-color)' }}
-                  className="hover:brightness-110 text-white px-3 py-1 rounded transition duration-200"
+                  className="btn btn-danger"
                 >
-                  Delete
+                  <FaTrash /> Delete
                 </button>
               </td>
+
             </tr>
           ))}
         </tbody>
@@ -176,6 +206,7 @@ function UserManagement() {
     </div>
   </div>
 </div>
+</NavAdmin>
 
   );
 }

@@ -8,6 +8,7 @@ const Ticket = require('./models/Ticket'); // เพิ่มบรรทัด�
 const User = require('./models/User'); // Uncomment this line
 const authRoutes = require('./routes/auth');
 const dotenv = require('dotenv');
+const bcrypt = require('bcryptjs'); // ใส่ไว้ด้านบนของไฟล์ หากยังไม่ได้ import
 const app = express();
 const port = 5000;
 
@@ -83,6 +84,17 @@ app.get('/api/tickets/report', async (req, res) => {
   }
 });
 
+app.get('/api/tickets/:ticketId', async (req, res) => {  // ดึงข้อมูลตาม _id
+  try {
+    const ticket = await Ticket.findById(req.params.ticketId);  // ใช้ findById แทน
+    if (!ticket) {
+      return res.status(404).json({ error: 'Ticket not found' });
+    }
+    res.json(ticket);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch ticket' });
+  }
+});
 
 app.get('/api/tickets/user/:userId', async (req, res) => {  // แก้เป็น /api/tickets/user/:userId
   try {
@@ -92,7 +104,6 @@ app.get('/api/tickets/user/:userId', async (req, res) => {  // แก้เป�
     res.status(500).json({ error: 'Failed to fetch tickets' });
   }
 });
-
 
 app.get('/api/tickets', async (req, res) => {
   try {
@@ -210,6 +221,57 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+// เปลี่ยน role ของผู้ใช้งาน
+app.put('/api/users/:id/role', async (req, res) => {
+  const { role } = req.body;
+
+  if (!role) {
+    return res.status(400).json({ message: 'Role is required' });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { role },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({
+      message: 'User role updated successfully',
+      user,
+    });
+  } catch (error) {
+    console.error('Error updating user role:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Reset password ให้ user
+app.post('/api/users/:id/reset-password', async (req, res) => {
+  try {
+    const defaultPassword = 'NTB111223';
+    const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Password reset successfully' });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 app.get('/api/news', async (req, res) => {
   try {

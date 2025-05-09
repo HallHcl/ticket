@@ -135,7 +135,7 @@
 .tickets-section {
   background-color: var(--bg-white);
   padding: 24px;
-  border-radius: var (--border-radius);
+  border-radius: var(--border-radius);
   box-shadow: var(--shadow);
 }
 
@@ -172,6 +172,8 @@
   padding: 12px 16px;
   background-color: rgba(52, 152, 219, 0.1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-top: 0; /* ลดระยะห่างด้านบน */
+
 }
 
 .header-normal {
@@ -228,17 +230,18 @@
 }
 
 .ticket-content {
-  padding: 16px;
+  padding: 12px;
   flex-grow: 1;
 }
 
 .ticket-info {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
 }
 
 .info-label {
+  margin-bottom: 12px;
   font-weight: 500;
   color: var(--text-light);
   font-size: 14px;
@@ -256,7 +259,11 @@
   margin: 8px 0 0;
   line-height: 1.5;
   color: var(--text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 
 /* ปรับแต่ง Select Box */
 .ticket-footer select {
