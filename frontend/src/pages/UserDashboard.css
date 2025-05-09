@@ -1,0 +1,164 @@
+/* ให้ทั้ง body และ html ยืดเต็มหน้าจอ */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f7f7f7;
+  height: 100%;
+  align-items: center;
+}
+
+/* ทำให้ .ticket-form ยืดเต็มหน้าจอ */
+.ticket-form {
+  background: #fff;
+  color: #322B7D;
+
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-form h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #322B7D;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+  padding: 0.8rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  outline: none;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+  border-color: #322B7D;
+}
+
+.input-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+
+
+.drop-box {
+  border: 2px dashed #322B7D;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  color: #322B7D;
+  margin-top: 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.drop-box:hover {
+  background-color: #322B7D;
+  color: white;
+}
+
+button[type="submit"] {
+  margin-top: 2rem;
+  background-color: #322B7D;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 1rem 0;
+  cursor: pointer;
+  font-weight: 600;
+  display: block;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #4f42b5;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-color: #ddd;
+  margin: 2rem 0;
+}
+
+.notification {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.notification.success {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.notification.error {
+  background-color: #f44336;
+  color: white;
+}
+
+.popup-notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* This will center the popup */
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
+  z-index: 9999;
+}
+
+.popup-notification.success {
+  background-color: #4CAF50; /* Green */
+}
+
+.popup-notification.error {
+  background-color: #f44336; /* Red */
+}
+
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  background: none;
+  color: white;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+

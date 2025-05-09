@@ -1,0 +1,179 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9fafb;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* จัดให้อยู่ตรงกลางแนวตั้ง */
+  align-items: center; /* จัดให้อยู่ตรงกลางแนวนอน */
+  height: 70vh; /* ทำให้เต็มหน้าจอ */
+  text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+  padding: 20px;
+}
+
+.header {
+  font-size: 7rem; /* ปรับขนาดตัวอักษร */
+  font-weight: bold;
+  color: #000; /* สีดำ */
+  margin: 0;
+}
+
+.highlight {
+  font-size: 6rem;
+  font-weight: bold;
+  color: blue; /* สีน้ำเงิน */
+  margin: 0;
+}
+
+.subtext {
+  font-size: 2rem;
+  color: #555; /* สีเทา */
+  max-width: 1200px; /* จำกัดความกว้างเพื่อให้อ่านง่าย */
+  margin-top: 10px;
+}
+
+.background-left-1 {
+  position: absolute;
+  left: 270px;
+  top: 170px;
+  opacity: 0.5;
+  width: 150px;
+}
+
+.background-left-2 {
+  position: absolute;
+  left: 85px;
+  top: 340px;
+  opacity: 0.5;
+  width: 120px;
+}
+
+
+.background-left-4{
+  position: absolute;
+  left: 240px;
+  top: 480px;
+  opacity: 0.5;
+  width: 120px;
+}
+
+.background-left-3 {
+  position: absolute;
+  left: 125px;
+  top: 600px;
+  opacity: 0.5;
+  width: 120px;
+}
+
+.background-right-1 {
+  position: absolute;
+  right: 300px;
+  top: 600px;
+  opacity: 0.5;
+  width: 150px;
+}
+
+.background-right-2 {
+  position: absolute;
+  right: 85px;
+  top: 300px;
+  opacity: 0.5;
+  width: 120px;
+}
+
+.background-right-3 {
+  position: absolute;
+  right: 125px;
+  top: 480px;
+  opacity: 0.5;
+  width: 150px;
+}
+
+.background-right-4 {
+  position: absolute;
+  right: 240px;
+  top: 140px;
+  opacity: 0.5;
+  width: 150px;
+}
+
+
+.grid-container {
+  display: flex;
+  flex-direction: column; /* จัดเรียงการ์ดในแนวตั้ง */
+  align-items: flex-start; /* ทำให้ทุกอย่างชิดซ้าย */
+  gap: 20px;
+}
+
+.card {
+  width: 100%; /* ให้การ์ดยืดเต็มพื้นที่ */
+  max-width: 800px; /* จำกัดความกว้าง */
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left; /* ทำให้ข้อความชิดซ้าย */
+}
+
+.video-section {
+  width: 100%; /* ให้พื้นที่เต็ม */
+  text-align: left; /* ทำให้ข้อความชิดซ้าย */
+  padding: 20px 40px; 
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1e3a8a;
+  text-align: left;
+  border-bottom: 3px solid #1e3a8a;
+  display: inline-block;
+  padding-bottom: 5px;
+  width: 100%; /* ทำให้เส้นแบ่งกว้างเต็ม */
+  padding-left: 10px;
+}
+
+.section-description {
+  font-size: 1.2rem;
+  color: #374151;
+  text-align: left;
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+.video-grid {
+  display: flex;
+  flex-wrap: nowrap;  /* ไม่ให้วิดีโอขึ้นบรรทัดใหม่ */
+  gap: 20px;
+  overflow-x: auto; /* เพิ่มแถบเลื่อนแนวนอนถ้าจอเล็ก */
+  padding-bottom: 10px;
+  align-items: flex-start; /* ทำให้วิดีโออยู่ด้านบนและชิดซ้าย */
+}
+
+.video-card {
+  flex: 0 0 auto;  /* ทำให้วิดีโอไม่ย่อขนาด */
+  width: 300px;  /* กำหนดขนาดของวิดีโอ */
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: left; /* ทำให้ข้อความชิดซ้าย */
+}
+
+.video-card iframe {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+}
+
+.video-container {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  align-items: flex-start; /* จัดให้วิดีโออยู่ด้านบนและชิดซ้าย */
+}

@@ -1,0 +1,33 @@
+.ebook-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.page {
+  background: white;
+  padding: 20px;
+  height: 100%;
+  overflow: auto;
+}
+
+.cover-page {
+  background: linear-gradient(to right, #2193b0, #6dd5ed);
+  color: white;
+  text-align: center;
+}
+
+.page h2 {
+  text-align: center;
+}
+
+.page-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1rem auto;
+}
+
+.page-content {
+  margin-top: 1rem;
+}

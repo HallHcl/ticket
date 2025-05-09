@@ -1,0 +1,136 @@
+/* ปรับ layout หลัก */
+.admin-dashboard {
+  padding: 1.5rem;
+  background-color: var(--bg-light);
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ส่วนหัว */
+.dashboard-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* ปุ่ม Refresh */
+.refresh-btn {
+  background-color: var(--bg-white);
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 8px 16px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 14px;
+  transition: var(--transition);
+}
+.refresh-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* ปุ่ม Export */
+.export-btn {
+  border: 1px solid var(--secondary-color);
+  color: var(--secondary-color);
+  padding: 8px 16px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 14px;
+  transition: var(--transition);
+  background-color: var(--bg-white);
+}
+.export-btn:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.apply-filter-btn {
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 8px 16px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 14px;
+  transition: var(--transition);
+  background-color: var(--bg-white);
+}
+
+.apply-filter-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* ฟอร์มกรองวันที่ */
+.filter-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.filter-section .date-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-section .button-group {
+  margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-section label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-dark);
+  gap: 5px; /* เพิ่มระยะห่างระหว่าง label กับ input */
+}
+
+.filter-section input[type="date"] {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+}
+
+
+
+
+/* สถิติต่าง ๆ */
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.stat-card h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  text-align: center;
+}
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* กราฟ */
+.tickets-section {
+  background-color: var(--bg-white);
+  box-shadow: var(--shadow);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+}
+.tickets-section h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+

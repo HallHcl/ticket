@@ -1,0 +1,266 @@
+/* General styles for the layout */
+.page-container {
+  font-family: Arial, sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: visible; /* Prevent Layout from hiding FlipBook */
+}
+
+/* Header section */
+#headerMain {
+  background-color: #ff007e;
+  padding: 10px 20px;
+}
+
+.header-main-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-col-left a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.header-col-left a i {
+  margin-right: 5px;
+}
+
+.header-col-right a {
+  margin-left: 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* Navbar section */
+.navbar {
+  background: linear-gradient(to right, #ff007e, #ff5ead);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  position: relative;
+}
+
+.logo img {
+  max-height: 60px;  /* ให้ logo มีความสูงสูงสุด 60px */
+  width: auto;       /* ให้ width คงที่ตามอัตราส่วนของรูป */
+  object-fit: contain;
+}
+
+.nav-links {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-start;
+}
+
+.nav-links ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links ul li {
+  margin: 0 10px;
+  position: relative;
+}
+
+/* Remove default link color and style */
+.nav-links ul li a {
+  color: #fff; /* Set all menu items to white */
+  text-decoration: none; /* Remove underline from all links */
+  font-size: 14px;
+}
+
+.nav-links ul li a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* Styling for the button (manuals) */
+.manuals-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.videos-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-links li {
+  position: relative;
+  padding-bottom: 10px; /* เพิ่มพื้นที่ให้เมาส์เคลื่อนที่ระหว่างปุ่มและ dropdown */
+}
+
+.dropdown {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Dropdown menu for Manuals */
+.nav-links li .dropdown {
+  display: block;
+  position: absolute;
+  background-color: #ff007e;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+  min-width: 160px;
+  z-index: 1000;
+  top: 100%;
+  left: 0;
+  opacity: 1;
+  visibility: visible;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden; /* สำหรับเอฟเฟกต์ขอบมน */
+  transition: all 0.3s ease; /* เพิ่มการเปลี่ยนแปลงแบบนุ่มนวล */
+}
+
+.nav-links li .dropdown li {
+  padding: 12px 20px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-links li .dropdown li:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* เอฟเฟกต์เมื่อ hover ที่เมนูย่อย */
+.nav-links li .dropdown li:hover {
+  background-color: #e6006e;
+}
+
+/* เอฟเฟกต์ขยับข้อความเล็กน้อยเมื่อ hover */
+.nav-links li .dropdown li:hover a {
+  transform: translateX(5px);
+}
+
+.login-btn, .logout-btn {
+  background-color: #ff007e;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.login-btn:hover, .logout-btn:hover {
+  background-color: #f394c4;
+}
+
+
+.nav-links li .dropdown li:hover a::after {
+  width: 100%;
+}
+
+/* เอฟเฟกต์ไอคอนลูกศร (เลือกใช้ฟอนต์ไอคอนหรือ SVG) */
+.nav-links li .dropdown li a::before {
+  content: '→';
+  position: absolute;
+  left: -15px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.nav-links li .dropdown li:hover a::before {
+  left: -10px;
+  opacity: 1;
+}
+
+
+.nav-links li .dropdown li {
+  padding: 10px 20px;
+}
+
+.nav-links li .dropdown li a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.nav-links li .dropdown li a:hover {
+  background-color: #e6006e;
+}
+
+/* Hamburger menu styles */
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 20px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.hamburger-menu div {
+  background-color: #fff;
+  height: 3px;
+  width: 100%;
+}
+
+/* Media Queries for mobile */
+@media screen and (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links ul {
+    flex-direction: column;
+    width: 100%;
+    display: none;
+  }
+
+  .nav-links ul li {
+    margin: 10px 0;
+  }
+
+  .logo img {
+    width: 120px;
+  }
+
+  .manuals .dropdown {
+    position: relative;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+  }
+
+  .manuals .dropdown li a {
+    padding: 10px 15px;
+  }
+
+  /* Show the hamburger menu */
+  .hamburger-menu {
+    display: flex;
+  }
+
+  .nav-links.open {
+    display: flex;
+    position: absolute; /* ใช้ absolute เพื่อให้เมนูแสดงเป็นชั้นเหนือเนื้อหาด้านล่าง */
+    top: 60px; /* วางเมนูด้านล่าง navbar */
+    left: 0;
+    right: 0;
+    background-color: #ff007e;
+    z-index: 999;
+  }
+
+  /* เพิ่มการแสดงเมนู dropdown */
+  .manuals .dropdown {
+    position: absolute;
+    background-color: #ff5ead;
+    z-index: 1000;
+  }
+}

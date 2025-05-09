@@ -1,0 +1,207 @@
+.news-page {
+    padding: 20px;
+  }
+  
+  .news-header-container {
+    margin-bottom: 20px;
+  }
+  
+  .news-header {
+    text-align: center;
+  }
+  
+  .news-item, .news-popular {
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+  }
+  
+  .news-item:hover, .news-popular:hover {
+    transform: scale(1.02);
+  }
+  
+
+.news-page {
+    background-color: #f4f4f4; /* Lighter gray background */
+    color: #333; /* Dark gray text for better readability */
+    padding-top: 180px;
+    position: relative;
+}
+
+.news-page-container {
+    position: relative;
+    padding: 20px;
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.news-header-container {
+    position: relative;
+    z-index: 900;
+    background: transparent;
+    padding: 0 20px;
+    margin-bottom: 20px;
+    margin-top: -160px;
+}
+
+.news-header {
+    max-width: 1100px;
+    width: 95%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: left;
+    border-left: 5px solid #007bff; /* Keep blue accent */
+    background: #2c3e50; /* Dark blue-gray for a professional look */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border-radius: 0 5px 5px 0;
+}
+
+.news-header h1 {
+    margin: 0;
+    color: #fff;
+    font-size: 2rem;
+}
+
+.news-header p {
+    color: #ccc;
+    margin-bottom: 0;
+}
+
+.news-main,
+.news-item,
+.news-popular {
+    background: #2c3e50 !important; /* บังคับให้ใช้สี Navy Blue */
+    color: #ffffff !important; /* เปลี่ยนสีข้อความให้เป็นสีขาวเพื่อให้อ่านง่าย */
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.news-main {
+    overflow: hidden;
+}
+
+.news-main .card-img-top {
+    width: 100%;
+    object-fit: cover;
+    height: 400px;
+}
+
+.news-item {
+    padding: 15px;
+}
+
+.popular-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-bottom: 2px solid #007bff; /* Blue accent for emphasis */
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    color: #000000;
+}
+
+.news-popular .card-img-top {
+    width: 100%;
+    object-fit: cover;
+    height: 200px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 0.85rem;
+    color: #ccc;
+}
+
+/* ปรับแต่งพื้นหลังของ Modal */
+.modal-content {
+    background: #2c3e50 !important; /* Navy Blue */
+    color: #ffffff !important; /* ข้อความเป็นสีขาว */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    
+}
+
+/* ปรับแต่ง Header ของ Modal */
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ปรับแต่ง Footer ของ Modal */
+.modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ปุ่มใน Modal */
+.modal-footer .btn {
+    background-color: #da227e; /* สีเขียวแบบ Modern */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.modal-footer .btn:hover {
+    background-color: #ff007e; /* สีเข้มขึ้นเมื่อ hover */
+}
+
+@media (max-width: 1200px) {
+    .news-header, .news-page-container {
+        max-width: 960px;
+    }
+}
+
+@media (max-width: 992px) {
+    .news-header, .news-page-container {
+        max-width: 720px;
+    }
+}
+
+@media (max-width: 768px) {
+    .news-page {
+        padding-top: 160px;
+    }
+    
+    .news-header, .news-page-container {
+        max-width: 540px;
+    }
+    
+    .news-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .news-main {
+        margin-bottom: 20px;
+    }
+    
+    .news-popular {
+        margin-bottom: 20px;
+    }
+    
+    .news-main .card-img-top {
+        height: 250px;
+    }
+}
+
+@media (max-width: 576px) {
+    .news-header, .news-page-container {
+        max-width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+/* hover effect */
+.news-main:hover,
+.news-item:hover,
+.news-popular:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+
