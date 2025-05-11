@@ -32,6 +32,7 @@ import AdminDelete from './pages/AdminDelete';
 import AdminManeger from './pages/AdminManeger'
 import UserManagement from './pages/UserManagement';
 import TicketDetail from './pages/TicketDetail';
+import Ebooklist from './pages/Ebooklist';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -96,6 +97,7 @@ const App = () => {
           <Route path="/epson-ebook" element={<EpsonEbook />} />
           <Route path="/brother-ebook" element={<BrotherEbook />} />
           <Route path="/ticket/:id" element={<TicketDetail />} />
+          <Route path="/ebooklist" element={<Ebooklist />} />
 
         </Routes>
       )}

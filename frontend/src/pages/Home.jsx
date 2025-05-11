@@ -170,33 +170,44 @@ const Home = () => {
             <div className="card-header-box">
               <div className="card-header">📢 IT Announcement</div>
             </div>
-            <Row>
-              {announcements.length > 0 ? (
-                announcements.map((article, index) => (
-                  <Col xs={6} sm={4} md={3} lg={3} key={article.id || index}>
-                    <Card
-                      className="news-popular mt-3"
-                      onClick={() => handleShowPreview(article)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <Card.Img
-                        variant="top"
-                        src={article.urlToImage || 'https://via.placeholder.com/600x300'}
-                      />
-                      <Card.Body>
-                        <Card.Title>{article.title}</Card.Title>
-                        <Card.Text>
-                          {article.source?.name || 'ไม่ระบุแหล่งที่มา'} |{' '}
-                          {new Date(article.publishedAt).toLocaleDateString()}
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))
-              ) : (
-                <p>กำลังโหลดประกาศ...</p>
-              )}
-            </Row>
+            <Row style={{ marginBottom: '8px' }}>
+  {announcements.length > 0 ? (
+    announcements.map((article, index) => (
+      <Col xs={6} sm={4} md={3} lg={3} key={article.id || index} className="d-flex">
+        <Card
+          className="news-popular mt-3 w-100 d-flex flex-column"
+          onClick={() => handleShowPreview(article)}
+          style={{
+            backgroundColor: '#2c3e50',
+            color: '#fff',
+            borderRadius: '5px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            marginBottom: '0', // ลดช่องว่างล่างของ card
+          }}
+        >
+          <Card.Img
+            variant="top"
+            src={article.urlToImage || 'https://via.placeholder.com/600x300'}
+            style={{ width: '100%', height: '260px', objectFit: 'cover' }}
+          />
+          <Card.Body className="d-flex flex-column" style={{ flex: 1 }}>
+            <Card.Title style={{ fontSize: '1.1rem', minHeight: '60px' }}>{article.title}</Card.Title>
+            <div style={{ flex: 1 }} />
+            <Card.Text style={{ marginTop: 'auto', fontSize: '0.95rem', color: '#e0e0e0' }}>
+              {article.source?.name || 'ไม่ระบุแหล่งที่มา'} |{' '}
+              {new Date(article.publishedAt).toLocaleDateString()}
+            </Card.Text>
+          </Card.Body>
+        </Card>
+      </Col>
+    ))
+  ) : (
+    <p>กำลังโหลดประกาศ...</p>
+  )}
+</Row>
 
             {/* Modal for News Preview */}
             <Modal show={showModal} onHide={() => setShowModal(false)} centered size="lg">

@@ -139,10 +139,10 @@ const NavbarAdmin = ({ children }) => {
 
           <nav className="nav-links">
             <ul>
-              <li><Link to="/admin-dashboard">Dashboard</Link></li>
+              <li><Link to="/admin-dashboard">Admin Dashboard</Link></li>
               <li><Link to="/admin-maneger">Staff Manager</Link></li>
               <li><Link to="/admin-report">Report Tickets</Link></li>
-              <li><Link to="/admin-management">User Management</Link></li>
+              <li><Link to="/admin-management">Admin Management</Link></li>
 
               {/* <li 
                 className="manuals"

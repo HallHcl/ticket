@@ -145,26 +145,13 @@ const LayoutComponent = ({ children }) => {
               {isLoggedIn && (
                 <li><Link to="/user-dashboard">Tickets</Link></li>
               )}
-              <li 
-                className="manuals"
-                onMouseEnter={() => handleMouseEnter('manuals')}
-                onMouseLeave={handleMouseLeave}
-              >
-                <button onClick={() => toggleDropdown('manuals')} className="manuals-button">
-                  E-book
-                </button>
-                {activeDropdown === 'manuals' && (
-                  <ul 
-                    className="dropdown"
-                    onMouseEnter={handleDropdownMouseEnter}
-                    onMouseLeave={handleDropdownMouseLeave}
-                  >
-                    <li><Link to="/notebook-ebook">Notebook</Link></li>
-                    <li><Link to="/printer">Printer</Link></li>
-                    <li><Link to="/wifi-ebook">Wifi and VPN</Link></li>
-                  </ul>
-                )}
-              </li>
+         
+<li className="manuals">
+  <Link to="/ebooklist" className="manuals-button">
+    E-book
+  </Link>
+</li>
+
               <li 
                 className="videos"
                 onMouseEnter={() => handleMouseEnter('videos')}
@@ -181,7 +168,6 @@ const LayoutComponent = ({ children }) => {
                   >
                     <li><Link to="/notebook-video">Notebook</Link></li>
                     <li><Link to="/printer-video">Printer</Link></li>
-                    <li><Link to="/wifi-video">Wifi and VPN</Link></li>
                   </ul>
                 )}
               </li>

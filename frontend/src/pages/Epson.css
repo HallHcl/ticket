@@ -1,4 +1,4 @@
-/* .ebook-container {
+.ebook-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,4 +70,4 @@
   .download-btn:hover {
     background-color: #005fa3;
   }
-   */
+  

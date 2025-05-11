@@ -1,0 +1,246 @@
+.ebook-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.ebook-header-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.ebook-header {
+  margin-bottom: 0;
+  font-size: 2.5rem;
+  font-weight: bold;
+  line-height: 1;
+  height: 48px; /* ปรับให้ใกล้เคียงกับ input */
+  display: flex;
+  align-items: center;
+}
+
+.ebook-search {
+  padding: 0.5rem 1rem;
+  width: 350px;
+  font-size: 1.1rem;
+  border-radius: 1.5rem;
+  border: 2px solid #222;
+  outline: none;
+  height: 48px; /* ปรับให้เท่ากับ h1 */
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.category-list {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* เปลี่ยนเป็น 6 คอลัมน์ */
+  gap: 1.2rem 2.2rem;
+  justify-items: start;
+  align-items: center;
+  padding-left: 80px;
+  margin: 0 auto;
+  list-style: none;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  background: none;
+  box-shadow: none;
+  position: relative;
+  padding: 0;
+}
+
+.category-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #16335B;
+  color: #fff;
+  font-size: 1.7rem;
+  border: 2px solid #16335B;
+  margin-right: -18px;
+  z-index: 2;
+  transition: background 0.2s, color 0.2s;
+}
+
+.category-label {
+  border: 2px solid #16335B;
+  border-radius: 2rem;
+  padding: 0.3rem 1.2rem 0.3rem 2.2rem;
+  color: #16335B;
+  font-weight: 500;
+  font-size: 1rem;
+  background: #fff;
+  min-width: 70px;
+  text-align: center;
+  margin-left: -20px;
+  z-index: 1;
+  box-shadow: none;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* ACTIVE STATE */
+.category-item.active .category-label {
+  background: #16335B;
+  color: #fff;
+  border-color: #16335B;
+}
+
+.category-item.active .category-icon {
+  background: #16335B;
+  color: #fff;
+  border-color: #16335B;
+}
+
+/* INACTIVE STATE */
+.category-item:not(.active) .category-label {
+  background: #fff;
+  color: #16335B;
+  border-color: #16335B;
+}
+
+.category-item:not(.active) .category-icon {
+  background: #fff;
+  color: #16335B;
+  border-color: #16335B;
+}
+
+/* ALL ปุ่มพิเศษ: active เป็นไอคอนขาวพื้นน้ำเงิน */
+.category-item.active .category-icon {
+  background: #16335B;
+  color: #fff;
+}
+
+/* เพิ่ม hover effect */
+.category-item:hover .category-label {
+  background: #16335B;
+  color: #fff;
+}
+.category-item:hover .category-icon {
+  background: #16335B;
+  color: #fff;
+}
+
+.ebook-section-title {
+  margin: 2.5rem 0 1.5rem 0;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.ebook-card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.ebook-card {
+  border: 2px solid #222;
+  border-radius: 1.5rem;
+  width: 220px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0 0.5rem 0;
+}
+
+.ebook-card {
+  border: 2px solid #222;
+  border-radius: 1.5rem;
+  width: 220px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0 0 0; /* ลบ padding-bottom ออก */
+  height: 100%; /* เพิ่มความสูงเต็ม */
+}
+
+.ebook-simple-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem 2rem;
+  width: 100%;
+  max-width: 1100px;         /* ปรับให้เท่ากับ .ebook-container */
+  margin: 0 auto;            /* จัดให้อยู่ตรงกลาง */
+  justify-content: center;   /* ให้ grid อยู่ตรงกลาง container */
+  /* ลบ justify-items: center; ออก */
+}
+
+.ebook-simple-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 220px;      /* กำหนดความกว้างเท่ากัน */
+  min-height: 320px; /* กำหนดความสูงขั้นต่ำ */
+  box-sizing: border-box;
+}
+
+.ebook-simple-oval {
+  width: 120px;
+  height: 120px;         /* ปรับให้เท่ากับ width */
+  background: #16335B;
+  border-radius: 50%;    /* เปลี่ยนจากวงรีเป็นวงกลม */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.ebook-simple-icon {
+  color: #fff;
+  font-size: 3rem;
+}
+
+.ebook-simple-bottom {
+  width: 100%;
+  background: #FFC1E3;
+  border-radius: 18px;
+  padding: 1rem 0.5rem 0.7rem 0.5rem;
+  text-align: center;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ebook-simple-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  word-break: break-word;
+}
+
+.ebook-simple-desc {
+  font-size: 1rem;
+  color: #222;
+  word-break: break-word;
+}
+
+.ebook-card-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+
+.ebook-card-desc {
+  font-size: 0.95rem;
+  color: #333;
+}

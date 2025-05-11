@@ -91,7 +91,6 @@
   align-items: stretch;
 }
 
-
 .btn {
   padding: 6px 12px;
   border-radius: 6px;
@@ -105,13 +104,12 @@
   transition: filter 0.2s ease-in-out;
 }
 
-
 .btn:hover {
   filter: brightness(110%);
 }
 
 .btn-primary {
-  background-color: var(--primary-color);
+  background-color: #002c5f;
 }
 
 .btn-accent {
@@ -124,4 +122,134 @@
 
 .capitalize {
   text-transform: capitalize;
+}
+
+.dropdown {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.dropdown-menu {
+  left: 50% !important;
+  transform: translateX(-50%);
+  min-width: 160px;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: none;
+  border: none;
+  margin-top: 4px;
+  background: #fff;
+  overflow: hidden; /* ให้ขอบโค้งมนของเมนูมีผลกับปุ่ม */
+}
+
+.dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1rem;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 0;
+  gap: 8px;
+}
+
+/* โค้งมนเฉพาะปุ่มบนและล่าง */
+.dropdown-item:first-child {
+  background: #2196f3;
+  color: #fff;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.dropdown-item:nth-child(2) {
+  background: #ffc107;
+  color: #fff;
+}
+
+.dropdown-item:last-child {
+  background: #f44336;
+  color: #fff;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.dropdown-item:hover {
+  filter: none;
+  opacity: 0.92;
+}
+
+.user-management-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-management-modal-content {
+  background: #f8fafc; /* สีพื้นหลังอ่อน */
+  border-radius: 18px;
+  padding: 32px 28px 24px 28px;
+  min-width: 320px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+  color: #222; /* สีตัวอักษรเข้มอ่านง่าย */
+}
+
+.user-management-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.user-management-modal-close:hover {
+  color: #e53935;
+}
+
+.user-management-modal-icon {
+  margin-bottom: 12px;
+}
+
+.user-management-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.user-management-modal-actions .btn-danger {
+  background-color: #e53935 !important;
+  color: #fff !important;
+  border: none;
+}
+
+.user-management-modal-actions .btn-danger:hover {
+  background-color: #c62828 !important;
+  filter: brightness(105%);
+}
+
+.user-management-modal-actions .btn {
+  background-color: #64748b;
+  color: #fff;
+}
+
+.user-management-modal-actions .btn:hover {
+  filter: brightness(110%);
 }
