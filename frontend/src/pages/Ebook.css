@@ -9,7 +9,6 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-
 .flipbook {
   width: 600px;        /* ✅ ตรงกับค่าที่ตั้งไว้ใน React */
   height: 800px;
