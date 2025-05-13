@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
 import {
   BarChart,
   Bar,
@@ -15,6 +14,7 @@ import {
 import './AdminReportPage.css';
 import Papa from 'papaparse';
 import NavAdmin from '../components/NavbarAdmin';
+
 
 const statusColors = {
   'WAIT FOR ASSET': '#3498db',
@@ -32,50 +32,27 @@ const AdminReportPage = () => {
   const [error, setError] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [isAuthorized, setIsAuthorized] = useState(false); // เพิ่ม state สำหรับตรวจสอบสิทธิ์
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
+    const fetchReport = async () => {
       try {
-        const decoded = jwtDecode(token);
-        if (decoded.role === 'admin') {
-          setIsAuthorized(true);  // ถ้าเป็นแอดมิน ให้ตั้งค่าเป็น true
-        } else {
-          setError('Access denied: Admin privileges required');
-          setLoading(false);
-        }
+        console.log('Fetching report data...');
+        const res = await axios.get('http://localhost:5000/api/tickets/report');
+        console.log('Report data:', res.data);
+        setReport(res.data);
+        setFilteredTickets(res.data.tickets);  // Initially show all tickets
       } catch (err) {
-        setError('Invalid token');
+        console.error('Error fetching report:', err);
+        setError('ไม่สามารถโหลดรายงานได้');
+      } finally {
         setLoading(false);
       }
-    } else {
-      setError('Authentication required');
-      setLoading(false);
-    }
+    };
+
+    fetchReport();
   }, []);
 
-  useEffect(() => {
-    if (isAuthorized) {
-      const fetchReport = async () => {
-        try {
-          console.log('Fetching report data...');
-          const res = await axios.get('http://localhost:5000/api/tickets/report');
-          console.log('Report data:', res.data);
-          setReport(res.data);
-          setFilteredTickets(res.data.tickets);  // Initially show all tickets
-        } catch (err) {
-          console.error('Error fetching report:', err);
-          setError('ไม่สามารถโหลดรายงานได้');
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchReport();
-    }
-  }, [isAuthorized]);
-
+  // Filter tickets based on selected date range
   const filterTicketsByDate = () => {
     console.log('Applying filter with startDate:', startDate, 'and endDate:', endDate);
   
@@ -95,6 +72,7 @@ const AdminReportPage = () => {
     }
   };
 
+  // Prepare chart data with sorted status
   const getChartData = () => {
     if (!filteredTickets || filteredTickets.length === 0) return [];
 
@@ -111,6 +89,7 @@ const AdminReportPage = () => {
     }));
   };
 
+  // Export data to CSV
   const exportToCSV = () => {
     const csvData = filteredTickets.map(ticket => ({
       'Ticket ID': ticket._id,
@@ -121,6 +100,7 @@ const AdminReportPage = () => {
   
     const csv = Papa.unparse(csvData);
   
+    // 🔥 เพิ่ม BOM ที่หัวไฟล์เพื่อรองรับภาษาไทยใน Excel
     const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
   
     const link = document.createElement('a');
@@ -131,121 +111,108 @@ const AdminReportPage = () => {
       link.click();
     }
   };
-
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>Reloading...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="error-container">
-        <div className="error-icon">⚠️</div>
-        <h3>Error</h3>
-        <p>{error}</p>
-      </div>
-    );
-  }
-
-  if (!isAuthorized) {
-    return (
-      <div className="access-denied">
-        <div className="access-denied-icon">🔒</div>
-        <h2>Access Denied</h2>
-        <p>You must be an admin to view this page.</p>
-      </div>
-    );
-  }
+  
 
   return (
     <NavAdmin>
-      <div className="admin-dashboard p-6">
-        <div className="dashboard-header flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-semibold">Report all repair reports</h1>
-          <button
-            className="refresh-btn border-blue-500 text-blue-500 px-4 py-1 rounded hover:bg-blue-50 transition"
-            onClick={() => window.location.reload()}
-          >
-            Refresh
-          </button>
-        </div>
+    <div className="admin-dashboard p-6">
+      <div className="dashboard-header flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-semibold">Report all repair reports</h1>
+        <button
+          className="refresh-btn border-blue-500 text-blue-500 px-4 py-1 rounded hover:bg-blue-50 transition"
+          onClick={() => window.location.reload()}
+        >
+          Refresh
+        </button>
 
-        <div className="filter-section">
-          <div className="date-inputs">
-            <label>
-              Start Date:
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-            </label>
-            <label>
-              End Date:
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </label>
-          </div>
-          <div className="button-group">
-            <button
-              className="apply-filter-btn"
-              onClick={filterTicketsByDate}
-            >
-              Apply
-            </button>
-            <button
-              className="export-btn"
-              onClick={exportToCSV}
-            >
-              Export CSV
-            </button>
-          </div>
-        </div>
-
-        {report && (
-          <div className="dashboard-stats grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
-            <div className="stat-card bg-white shadow-md rounded-xl p-4 flex flex-col justify-center items-center h-36">
-              <h3 className="text-sm font-semibold text-gray-500">Total Tickets</h3>
-              <p className="text-2xl font-bold text-gray-800">{report.totalTickets}</p>
-            </div>
-            {Object.entries(report.statusSummary).map(([status, count]) => (
-              <div
-                className="stat-card bg-white shadow-md rounded-xl p-4 flex flex-col justify-center items-center h-36"
-                key={status}
-              >
-                <h3 className="text-sm font-semibold text-gray-500 text-center">{status}</h3>
-                <p className="text-2xl font-bold text-gray-800">{count}</p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {report && (
-          <div className="tickets-section bg-white shadow-md rounded-xl p-6">
-            <h2 className="text-lg font-semibold mb-4">Ticket Status Distribution</h2>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={getChartData()}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="value">
-                  {getChartData().map((entry) => (
-                    <Cell key={entry.name} fill={statusColors[entry.name]} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        )}
       </div>
+
+      {error && <p className="text-red-500">{error}</p>}
+      {loading && (
+        <div className="loading-container">
+          <div className="loading-spinner"></div>Reloading...
+        </div>
+      )}
+
+<div className="filter-section">
+  <div className="date-inputs">
+    <label>
+      Start Date:
+      <input
+        type="date"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+      />
+    </label>
+    <label>
+      End Date:
+      <input
+        type="date"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+      />
+    </label>
+  </div>
+  <div className="button-group">
+    <button
+      className="apply-filter-btn"
+      onClick={filterTicketsByDate}
+    >
+      Apply
+    </button>
+    <button
+      className="export-btn"
+      onClick={exportToCSV}
+    >
+      Export CSV
+    </button>
+  </div>
+</div>
+
+
+
+      {report && (
+        <div className="dashboard-stats grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
+          <div className="stat-card bg-white shadow-md rounded-xl p-4 flex flex-col justify-center items-center h-36">
+            <h3 className="text-sm font-semibold text-gray-500">Total Tickets</h3>
+            <p className="text-2xl font-bold text-gray-800">{report.totalTickets}</p>
+          </div>
+          {Object.entries(report.statusSummary).map(([status, count]) => (
+            <div
+              className="stat-card bg-white shadow-md rounded-xl p-4 flex flex-col justify-center items-center h-36"
+              key={status}
+            >
+              <h3 className="text-sm font-semibold text-gray-500 text-center">{status}</h3>
+              <p className="text-2xl font-bold text-gray-800">{count}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+
+
+      {report && (
+        <div className="tickets-section bg-white shadow-md rounded-xl p-6">
+          
+          <h2 className="text-lg font-semibold mb-4">Ticket Status Distribution</h2>
+          
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={getChartData()}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value">
+                {getChartData().map((entry) => (
+                  <Cell key={entry.name} fill={statusColors[entry.name]} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+    </div>
     </NavAdmin>
   );
 };

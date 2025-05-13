@@ -3,25 +3,14 @@ import HTMLFlipBook from "react-pageflip";
 import LayoutComponent from "../components/Layout";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import "./Ebook.css";
+import "./Ebook.css"; // Optional: You can create a separate CSS file for styling
 
 function Security() {
   const pages = [
-    {
-      title: "🛡️ หน้าที่ 8: การดูแลความปลอดภัยของโน้ตบุ๊ค",
-      content: (
-        <div style={{ textAlign: 'left' }}>
-          <ol>
-            <li>เก็บให้ปลอดภัย: อย่าทิ้งโน้ตบุ๊คไว้ในรถหรือสถานที่เสี่ยงต่อการถูกขโมย</li>
-            <li>ตั้งรหัสผ่าน: ใช้รหัสผ่านที่คาดเดายาก และเปิดใช้งานการล็อกอินอัตโนมัติ</li>
-            <li>ติดตั้ง Antivirus และ Firewall: ใช้ซอฟต์แวร์ป้องกันไวรัสที่เชื่อถือได้ เช่น Windows Defender</li>
-            <li>อัปเดตซอฟต์แวร์สม่ำเสมอ: อัปเดตระบบปฏิบัติการและโปรแกรมต่าง ๆ เพื่อลดช่องโหว่</li>
-            <li>อย่าคลิกลิงก์หรือดาวน์โหลดไฟล์ที่ไม่รู้จัก: ระวังอีเมลหลอกลวง (Phishing)</li>
-          </ol>
-        </div>
-      ),
-      imageSrc: "path/to/image8.png",
-    }
+    { imageSrc: "/images/47.png" },
+    { imageSrc: "/images/48.png" },
+    { imageSrc: "/images/49.png" },
+    { imageSrc: "/images/50.png" },
   ];
 
   const flipbookRef = useRef();
@@ -63,49 +52,57 @@ function Security() {
     pdf.save("Security.pdf");
   };
 
-  const turnToPageWithAnimation = (pageIndex) => {
-    if (!flipbookRef.current) {
-      console.error("flipbookRef.current is null");
-      return;
-    }
-
-    const book = flipbookRef.current.pageFlip();
-    if (book) {
-      book.turnToPage(pageIndex);
-    } else {
-      console.error("Could not access pageFlip instance");
-    }
-  };
-
   return (
     <LayoutComponent>
       <div className="ebook-container">
-        <div className="sidebar">
-          <h3>สารบัญ</h3>
-          <ul>
-            {pages.map((page, index) => (
-              <li key={index}>
-                <button onClick={() => turnToPageWithAnimation(index)}>
-                  {page.title}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
         <div className="content">
-          <button className="download-btn" onClick={downloadPDF}>
-            📥 Download PDF
+        <div className="controls" style={{ marginBottom: "1rem" }}>
+          <button onClick={() => flipbookRef.current.pageFlip().flipPrev()}>
+            ⬅ Previous
           </button>
-          <HTMLFlipBook width={600} height={600} className="flipbook" ref={flipbookRef}>
-            {pages.map((page, index) => (
-              <div key={index} className="page">
-                <h2>{page.title}</h2>
-                {page.content}
-                {page.imageSrc && <img src={page.imageSrc} alt={`Page ${index + 1}`} />}
+          <button onClick={downloadPDF}>📥 Download PDF</button>
+          <button onClick={() => flipbookRef.current.pageFlip().flipNext()}>
+            Next ➡
+          </button>
+        </div>
+        <HTMLFlipBook width={600} height={800} className="flipbook" ref={flipbookRef}>
+          {pages.map((page, index) => (
+            <div
+              key={index}
+              className="page"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "relative",
+              }}
+            >
+              {page.imageSrc && (
+                <img
+                  src={page.imageSrc}
+                  alt={`Page ${index + 1}`}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    borderRadius: "0",
+                  }}
+                />
+              )}
+              <div
+                className="page-number"
+                style={{
+                  position: "absolute",
+                  bottom: 10,
+                  right: 20,
+                  fontSize: "14px",
+                }}
+              >
+                📄 {index + 1}
               </div>
-            ))}
-          </HTMLFlipBook>
+            </div>
+          ))}
+        </HTMLFlipBook>
         </div>
       </div>
     </LayoutComponent>

@@ -3,38 +3,23 @@ import HTMLFlipBook from "react-pageflip";
 import LayoutComponent from "../components/Layout";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import "./Ebook.css";
 
 function Language() {
-    const pages = [
-        {
-          title: "🈸 หน้าที่ 4: การตั้งค่าภาษา (Language Settings)",
-          content: (
-            <div style={{ textAlign: 'left' }}>
-              <p>สำหรับคนที่ต้องการเปลี่ยนภาษา Windows</p>
-              <ol>
-                <li>ไปที่ช่อง Search แล้วพิมพ์ว่า Language Settings หรือไปที่ Settings → Time & Language</li>
-                <li>ไปที่หัวข้อ Language แล้วหาหัวข้อที่ชื่อว่า Windows Display Language แล้วเลือกภาษาที่ต้องการ</li>
-              </ol>
-      
-              <p>สำหรับคนที่ต้องการให้คีย์บอร์ดเปลี่ยนภาษาได้</p>
-              <ol>
-                <li>ไปที่ช่อง Search แล้วพิมพ์ว่า Language Settings หรือไปที่ Settings → Time & Language</li>
-                <li>ไปที่หัวข้อ Language แล้วหาคำว่า Spelling, typing, & keyboard settings</li>
-                <li>หาหัวข้อ Advanced keyboard settings แล้วไปที่ Input language hot keys</li>
-                <li>กดปุ่ม Change Key Sequence</li>
-                <li>หัวข้อ Switch Input Language ให้เลือก Grave Accent (*)</li>
-                <li>หัวข้อ Switch Keyboard Layout ให้เลือก Not Assigned</li>
-              </ol>
-            </div>
-          ),
-          
-        },{
-            imageSrc: "https://media.canva.com/v2/image-resize/format:PNG/height:753/quality:100/uri:ifs%3A%2F%2F%2F64a9624c-d741-4d67-8ad1-f9b0afdd97dc/watermark:F/width:797?csig=AAAAAAAAAAAAAAAAAAAAAOmMwe3FnkGsqceNnqaZ5Odkb2UlJyOdD9aGPGcnC_Ct&exp=1745779488&osig=AAAAAAAAAAAAAAAAAAAAANZxNP24EpgQrzDGKCqjFvl1TAOKgZ4g6qGNyWNN8cQZ&signer=media-rpc&x-canva-quality=screen"
-        }
-      ];
-      
-      
+  const pages = [
+    { imageSrc: "/images/1.png" },
+    { imageSrc: "/images/2.png" },
+    { imageSrc: "/images/3.png" },
+    { imageSrc: "/images/4.png" },
+    { imageSrc: "/images/5.png" },
+    { imageSrc: "/images/6.png" },
+    { imageSrc: "/images/7.png" },
+    { imageSrc: "/images/8.png" },
+    { imageSrc: "/images/9.png" },
+    { imageSrc: "/images/10.png" },
+    { imageSrc: "/images/11.png" },
+    { imageSrc: "/images/12.png" },
+    { imageSrc: "/images/13.png" }
+  ];
 
   const flipbookRef = useRef();
 
@@ -75,46 +60,43 @@ function Language() {
     pdf.save("Language.pdf");
   };
 
-  const turnToPageWithAnimation = (pageIndex) => {
-    if (!flipbookRef.current) {
-      console.error("flipbookRef.current is null");
-      return;
-    }
-
-    const book = flipbookRef.current.pageFlip();
-    if (book) {
-      book.turnToPage(pageIndex);
-    } else {
-      console.error("Could not access pageFlip instance");
-    }
-  };
-
   return (
     <LayoutComponent>
       <div className="ebook-container">
-        <div className="sidebar">
-          <h3>สารบัญ</h3>
-          <ul>
-            {pages.map((page, index) => (
-              <li key={index}>
-                <button onClick={() => turnToPageWithAnimation(index)}>
-                  {page.title}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
         <div className="content">
-          <button className="download-btn" onClick={downloadPDF}>
-            📥 Download PDF
-          </button>
-          <HTMLFlipBook width={600} height={600} className="flipbook" ref={flipbookRef}>
+          <div className="controls" style={{ marginBottom: "1rem" }}>
+            <button onClick={() => flipbookRef.current.pageFlip().flipPrev()}>⬅ Previous</button>
+            <button onClick={downloadPDF}>📥 Download PDF</button>
+            <button onClick={() => flipbookRef.current.pageFlip().flipNext()}>Next ➡</button>
+          </div>
+          <HTMLFlipBook width={600} height={800} className="flipbook" ref={flipbookRef}>
             {pages.map((page, index) => (
-              <div key={index} className="page">
-                <h2>{page.title}</h2>
-                {page.content}
-                {page.imageSrc && <img src={page.imageSrc} alt={`Page ${index + 1}`} />}
+              <div
+                key={index}
+                className="page"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "relative",
+                  left: "500%",
+                }}
+              >
+                {page.imageSrc && (
+                  <img
+                    src={page.imageSrc}
+                    alt={`Page ${index + 1}`}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain", // ให้รูปเต็มหน้า
+                      borderRadius: "0", // ไม่ให้มีกรอบ
+                    }}
+                  />
+                )}
+                <div className="page-number" style={{ position: "absolute", bottom: 10, right: 20, fontSize: "14px" }}>
+                  📄 {index + 1}
+                </div>
               </div>
             ))}
           </HTMLFlipBook>

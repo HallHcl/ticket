@@ -3,25 +3,15 @@ import HTMLFlipBook from "react-pageflip";
 import LayoutComponent from "../components/Layout";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import "./Ebook.css";
 
 function Time() {
   const pages = [
-    {
-      title: "⏰ หน้าที่ 5: การตั้งค่าเวลา (Time Adjustment)",
-      content: (
-        <div style={{ textAlign: 'left' }}>
-          <ol>
-            <li>คลิกขวาที่ นาฬิกา ด้านขวาล่างของหน้าจอ แล้วคลิก Adjust date/time หรือไปที่ Setting → Time & Language</li>
-            <li>ให้ติ้กที่ Set Time Automatically</li>
-            <li>หาหัวข้อ Time Zone แล้วเลือก Bangkok,Hanoi,Jarkarta</li>
-          </ol>
-        </div>
-      ),
-      imageSrc: "path/to/image5.png",
-    }
+    { imageSrc: "/images/18.png" },
+    { imageSrc: "/images/19.png" },
+    { imageSrc: "/images/20.png" },
+    { imageSrc: "/images/21.png" },
+    { imageSrc: "/images/22.png" }
   ];
-
   const flipbookRef = useRef();
 
   const downloadPDF = async () => {
@@ -61,46 +51,43 @@ function Time() {
     pdf.save("Time.pdf");
   };
 
-  const turnToPageWithAnimation = (pageIndex) => {
-    if (!flipbookRef.current) {
-      console.error("flipbookRef.current is null");
-      return;
-    }
-
-    const book = flipbookRef.current.pageFlip();
-    if (book) {
-      book.turnToPage(pageIndex);
-    } else {
-      console.error("Could not access pageFlip instance");
-    }
-  };
-
   return (
     <LayoutComponent>
       <div className="ebook-container">
-        <div className="sidebar">
-          <h3>สารบัญ</h3>
-          <ul>
-            {pages.map((page, index) => (
-              <li key={index}>
-                <button onClick={() => turnToPageWithAnimation(index)}>
-                  {page.title}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
         <div className="content">
-          <button className="download-btn" onClick={downloadPDF}>
-            📥 Download PDF
-          </button>
-          <HTMLFlipBook width={600} height={600} className="flipbook" ref={flipbookRef}>
+          <div className="controls">
+            <button onClick={() => flipbookRef.current.pageFlip().flipPrev()}>⬅ Previous</button>
+            <button onClick={downloadPDF}>📥 Download PDF</button>
+            <button onClick={() => flipbookRef.current.pageFlip().flipNext()}>Next ➡</button>
+          </div>
+          <HTMLFlipBook width={600} height={800} className="flipbook" ref={flipbookRef}>
             {pages.map((page, index) => (
-              <div key={index} className="page">
-                <h2>{page.title}</h2>
-                {page.content}
-                {page.imageSrc && <img src={page.imageSrc} alt={`Page ${index + 1}`} />}
+              <div
+                key={index}
+                className="page"
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  position: "relative",
+                }}
+              >
+                {page.imageSrc && (
+                  <img
+                    src={page.imageSrc}
+                    alt={`Page ${index + 1}`}
+                    className="page-image"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      borderRadius: '0px',
+                    }}
+                  />
+                )}
+                <div className="page-number" style={{ position: "absolute", bottom: 10, right: 20, fontSize: "14px" }}>
+                  📄 {index + 1}
+                </div>
               </div>
             ))}
           </HTMLFlipBook>

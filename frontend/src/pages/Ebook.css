@@ -1,33 +1,133 @@
 .ebook-container {
   display: flex;
+  flex-direction: column; /* จัดเรียงแนวตั้ง */
   justify-content: center;
-  margin-top: 2rem;
+  align-items: center;
+  background-color: #fff;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.flipbook {
+  width: 600px;        /* ✅ ตรงกับค่าที่ตั้งไว้ใน React */
+  height: 800px;
+  background-color: #161b22;
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;     /* ✅ ป้องกันภาพล้น */
 }
 
 .page {
-  background: white;
-  padding: 20px;
+  width: 100%;
   height: 100%;
-  overflow: auto;
-}
-
-.cover-page {
-  background: linear-gradient(to right, #2193b0, #6dd5ed);
-  color: white;
+  top: 0;
+  left: 0;
+  background: #ffffff; /* เปลี่ยนเป็นสีดำ */
+  border: 1px solid #333; /* ปรับสีขอบ */
+  box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.05); /* ปรับเงา */
+  color: #D4D4D4; /* เปลี่ยนสีข้อความหลัก */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-radius: 5px;
   text-align: center;
+  backface-visibility: hidden;
 }
 
 .page h2 {
-  text-align: center;
+  font-size: 24px;
+  color: #007ACC; /* เปลี่ยนสีหัวข้อ */
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
-.page-image {
-  max-width: 100%;
-  height: auto;
+.page p {
+  font-size: 15px;
+  color: #D4D4D4; /* เปลี่ยนสีข้อความ */
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.page img {
+  width: 100%; /* ทำให้รูปขยายเต็มหน้าจอ */
+  height: 100%; /* ให้รูปขยายเต็มความสูง */
+  object-fit: contain; /* ให้รูปเต็มพื้นที่โดยรักษาสัดส่วน */
   display: block;
-  margin: 1rem auto;
+  margin: 0 auto; /* ไม่มีการ margin */
+  border-radius: 0; /* ลบขอบของรูป */
+  border: none; /* ลบขอบของรูป */
+  box-shadow: none; /* ลบเงาของรูป */
 }
 
-.page-content {
-  margin-top: 1rem;
+.page-number {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 18px;
+  color: #080808;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  z-index: 30;
+}
+
+.download-btn {
+  position: absolute; /* เปลี่ยนเป็น fixed เพื่อยึดกับหน้าต่างเบราว์เซอร์ */
+  bottom: 320px;
+  right: -220px;
+  background: #238636;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  z-index: 1000; /* ให้ z-index สูงๆ เพื่อให้ปุ่มอยู่เหนือองค์ประกอบอื่น */
+}
+
+.download-btn:hover {
+  background: #2ea043;
+  transform: scale(1.05);
+}
+
+.content {
+  width: 75%;
+  padding: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Increased gap for better spacing */
+  position: absolute;
+  top: -60px; /* Adjust as needed for vertical positioning */
+  left: 50%;
+  transform: translateX(-50%); /* Center the buttons horizontally */
+  width: 100%; /* Allow buttons to spread if needed */
+  padding: 10px 0; /* Add some padding above and below the buttons */
+}
+
+.controls button {
+  padding: 12px 24px; /* Increased padding */
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff; /* Example blue color */
+  color: white;
+  border: none;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+.controls button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }

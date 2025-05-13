@@ -3,25 +3,17 @@ import HTMLFlipBook from "react-pageflip";
 import LayoutComponent from "../components/Layout";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import "./Ebook.css";
+
 
 function JoinDomain() {
   const pages = [
-    {
-      title: "🌐 หน้าที่ 3: การเข้าร่วมโดเมน (Join Domain)",
-      content: (
-        <div style={{ textAlign: 'left' }}>
-          <ol>
-            <li>ไปที่ช่อง Search แล้วพิมพ์คำว่า "this pc" จากนั้นคลิกขวาและไปที่ Properties หรือไปที่ Settings → System → About</li>
-            <li>กดไปที่หัวข้อ "Rename this PC (Advanced)"</li>
-            <li>ในหัวข้อ "Computer name" ให้ใส่ชื่อ asset ของเครื่อง</li>
-            <li>ในหัวข้อ "Member of" ให้เปลี่ยนจาก "Workgroup" เป็น "Domain" แล้วใส่ Domain ของบริษัทลงไป</li>
-          </ol>
-        </div>
-      ),
-      imageSrc: "",
-    },
-    // สามารถเพิ่มหน้าถัดไปได้ใน array นี้
+    { imageSrc: "/images/23.png" },
+    { imageSrc: "/images/24.png" },
+    { imageSrc: "/images/25.png" },
+    { imageSrc: "/images/26.png" },
+    { imageSrc: "/images/27.png" },
+    { imageSrc: "/images/28.png" },
+    { imageSrc: "/images/29.png" }
   ];
 
   const flipbookRef = useRef();
@@ -29,22 +21,16 @@ function JoinDomain() {
   const downloadPDF = async () => {
     const pdf = new jsPDF("p", "mm", "a4");
 
-    if (!flipbookRef.current) {
-      console.error("flipbookRef.current เป็น null หรือ undefined");
-      return;
-    }
+    if (!flipbookRef.current) return;
 
     const book = flipbookRef.current.pageFlip();
 
     for (let i = 0; i < pages.length; i++) {
       book.turnToPage(i);
-      await new Promise((r) => setTimeout(r, 100)); // รอให้หน้าโหลดเสร็จ
+      await new Promise((r) => setTimeout(r, 100));
 
       const page = book.getPage(i);
-      if (!page || !page.element) {
-        console.error(`ไม่พบองค์ประกอบของหน้าที่ ${i + 1}`);
-        continue;
-      }
+      if (!page || !page.element) continue;
 
       const canvas = await html2canvas(page.element, {
         scale: 2,
@@ -63,46 +49,43 @@ function JoinDomain() {
     pdf.save("JoinDomain.pdf");
   };
 
-  const turnToPageWithAnimation = (pageIndex) => {
-    if (!flipbookRef.current) {
-      console.error("flipbookRef.current is null");
-      return;
-    }
-
-    const book = flipbookRef.current.pageFlip();
-    if (book) {
-      book.turnToPage(pageIndex);
-    } else {
-      console.error("Could not access pageFlip instance");
-    }
-  };
-
   return (
     <LayoutComponent>
       <div className="ebook-container">
-        <div className="sidebar">
-          <h3>สารบัญ</h3>
-          <ul>
-            {pages.map((page, index) => (
-              <li key={index}>
-                <button onClick={() => turnToPageWithAnimation(index)}>
-                  {page.title}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
         <div className="content">
-          <button className="download-btn" onClick={downloadPDF}>
-            📥 Download PDF
-          </button>
-          <HTMLFlipBook width={600} height={600} className="flipbook" ref={flipbookRef}>
+          <div className="controls">
+            <button onClick={() => flipbookRef.current.pageFlip().flipPrev()}>⬅ Previous</button>
+            <button onClick={downloadPDF}>📥 Download PDF</button>
+            <button onClick={() => flipbookRef.current.pageFlip().flipNext()}>Next ➡</button>
+          </div>
+          <HTMLFlipBook width={600} height={800} className="flipbook" ref={flipbookRef}>
             {pages.map((page, index) => (
-              <div key={index} className="page">
-                <h2>{page.title}</h2>
-                {page.content}
-                {page.imageSrc && <img src={page.imageSrc} alt={`Page ${index + 1}`} />}
+              <div
+                key={index}
+                className="page"
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  position: "relative",
+                }}
+              >
+                {page.imageSrc && (
+                  <img
+                    src={page.imageSrc}
+                    alt={`Page ${index + 1}`}
+                    className="page-image"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      borderRadius: '0px',
+                    }}
+                  />
+                )}
+                <div className="page-number" style={{ position: "absolute", bottom: 10, right: 20, fontSize: "14px" }}>
+                  📄 {index + 1}
+                </div>
               </div>
             ))}
           </HTMLFlipBook>
@@ -111,5 +94,4 @@ function JoinDomain() {
     </LayoutComponent>
   );
 }
-
 export default JoinDomain;

@@ -137,7 +137,7 @@ const EbookAll = () => {
 
   return (
    <LayoutComponent>
-      <div className="ebook-container">
+      <div className="ebooklist-container">
         <div className="ebook-header-row">
           <h1 className="ebook-header">E-book</h1>
           <input

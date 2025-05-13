@@ -11,25 +11,17 @@ const LoginPage = () => {
 
   // Handle login form submission
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
-
-    localStorage.setItem('authToken', response.data.token);
-
-    // Check user role and navigate accordingly
-    const userRole = response.data.user?.role;
-    if (userRole === 'admin') {
-      navigate('/admin-dashboard');
-    } else {
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
+      
+      localStorage.setItem('authToken', response.data.token);
       navigate('/');
+    } catch (error) {
+      setErrorMessage('Invalid credentials, please try again.');
     }
-  } catch (error) {
-    setErrorMessage('Invalid credentials, please try again.');
-  }
-};
-
+  };
 
   return (
     <div className="login-page">
