@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 import NavAdmin from '../components/NavbarAdmin';
 import './AdminDashboard.css';
 
@@ -13,6 +14,8 @@ const AdminDashboard = () => {
   const [selectedStatus, setSelectedStatus] = useState(''); // State for selected status
   const [selectedIssueType, setSelectedIssueType] = useState(''); // State for selected issue type
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+
   
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -51,16 +54,19 @@ const AdminDashboard = () => {
   };
 
   // Filter tickets based on the selected status and issue type
-  const filteredTickets = tickets.filter(ticket => {
+  const filteredTickets = tickets
+  .filter(ticket => {
     const matchesStatus = selectedStatus ? ticket.status === selectedStatus : true;
     const matchesIssueType = selectedIssueType ? ticket.issueType === selectedIssueType : true;
     const matchesSearch =
       ticket.details.toLowerCase().includes(searchQuery.toLowerCase()) ||
       ticket.branchCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
       ticket.issueType.toLowerCase().includes(searchQuery.toLowerCase());
-  
+
     return matchesStatus && matchesIssueType && matchesSearch;
-  });
+  })
+  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // เรียงล่าสุดอยู่บนสุด
+
   
 
 
@@ -144,9 +150,6 @@ const handleIssueTypeFilter = (issueType) => {
     return 'header-danger';
   };
   
-
-
-
   return (
     <NavAdmin>
     <div className="admin-dashboard">
@@ -204,11 +207,15 @@ const handleIssueTypeFilter = (issueType) => {
         </div>
       </div>
 
-
         {filteredTickets.length > 0 ? (
           <div className="tickets-grid">
             {filteredTickets.map((ticket) => (
-              <div className="ticket-card" key={ticket._id}>
+              <div
+                key={ticket._id}
+                onClick={() => navigate(`/ticket/${ticket._id}`)}
+                className="ticket-card"
+                style={{ cursor: 'pointer' }}
+              >
                 <div className={`ticket-header ${getHeaderColorClass(ticket)}`}>
                   <span className={`issue-type ${getHeaderColorClass(ticket)}`}>
                     {ticket.issueType}
@@ -217,7 +224,6 @@ const handleIssueTypeFilter = (issueType) => {
                     {new Date(ticket.createdAt).toLocaleDateString()}
                   </span>
                 </div>
-
 
                 <div className="ticket-content">
                   <div className="ticket-info">
@@ -234,17 +240,21 @@ const handleIssueTypeFilter = (issueType) => {
                   </div>
                 </div>
                 <div className="ticket-footer">
-                  <select
-                    value={ticket.status || 'WAIT FOR ASSET'}
-                    onChange={(e) => updateTicketStatus(ticket._id, e.target.value)}
-                  >
-                    <option value="WAIT FOR ASSET">WAIT FOR ASSET</option>
-                    <option value="WORK IN PROGRESS">WORK IN PROGRESS</option>
-                    <option value="PENDING">PENDING</option>
-                    <option value="CHECKING">CHECKING</option>
-                    <option value="CANCELLED">CANCELLED</option>
-                    <option value="COMPLETED">COMPLETED</option>
-                  </select>
+            <select
+  value={ticket.status || 'WAIT FOR ASSET'}
+  onChange={(e) => {
+    e.stopPropagation();
+    updateTicketStatus(ticket._id, e.target.value);
+  }}
+  onClick={(e) => e.stopPropagation()} // เพิ่มบรรทัดนี้
+>
+  <option value="WAIT FOR ASSET">WAIT FOR ASSET</option>
+  <option value="WORK IN PROGRESS">WORK IN PROGRESS</option>
+  <option value="PENDING">PENDING</option>
+  <option value="CHECKING">CHECKING</option>
+  <option value="CANCELLED">CANCELLED</option>
+  <option value="COMPLETED">COMPLETED</option>
+</select>
                 </div>
               </div>
             ))}
