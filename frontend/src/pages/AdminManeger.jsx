@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavAdmin from '../components/NavbarAdmin';
 import './AdminManeger.css';
+import { jwtDecode } from 'jwt-decode';
 
 const AdminManager = () => {
   const [staff, setStaff] = useState([]);
@@ -16,33 +17,77 @@ const AdminManager = () => {
   });
   const [showAlert, setShowAlert] = useState(false);
   const [staffToDelete, setStaffToDelete] = useState(null);
+  const [isAuthorized, setIsAuthorized] = useState(false); // สถานะการเข้าถึง
+  const [loading, setLoading] = useState(true); // สถานะการโหลดข้อมูล
+  const [error, setError] = useState(''); // ข้อความ error
 
-  // Effect to prevent scrolling when alert is open
+  // Effect สำหรับการตรวจสอบ token และสิทธิ์การเข้าถึง
   useEffect(() => {
-    if (showAlert) {
-      // Prevent background scrolling when alert is open
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [showAlert]);
-
-  useEffect(() => {
-    const fetchStaff = async () => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
       try {
-        const response = await axios.get('http://localhost:5000/api/it-staff');
-        setStaff(response.data);
-      } catch (error) {
-        console.error('Error fetching staff', error);
+        const decoded = jwtDecode(token);
+        if (decoded.role === 'admin') {
+          setIsAuthorized(true);
+          fetchStaff(token); // เรียกฟังก์ชันเพื่อดึงข้อมูล staff
+        } else {
+          setError('Access denied: Admin privileges required');
+          setLoading(false);
+        }
+      } catch (err) {
+        setError('Invalid token');
+        setLoading(false);
       }
-    };
-    fetchStaff();
+    } else {
+      setError('Authentication required');
+      setLoading(false);
+    }
   }, []);
 
+  // ดึงข้อมูล staff
+  const fetchStaff = async (token) => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/it-staff', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setStaff(response.data);
+      setLoading(false);
+    } catch (error) {
+      setError('Error fetching staff');
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <div className="error-icon">⚠️</div>
+        <h3>Error</h3>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (!isAuthorized) {
+    return (
+      <div className="access-denied">
+        <div className="access-denied-icon">🔒</div>
+        <h2>Access Denied</h2>
+        <p>You must be an admin to view this page.</p>
+      </div>
+    );
+  }
+
+  // ฟังก์ชันการจัดการข้อมูล staff
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'profilePic') {
@@ -61,12 +106,10 @@ const AdminManager = () => {
 
     try {
       if (newStaff._id) {
-        // ถ้ามี _id ก็เป็นการอัพเดต
         await axios.put(`http://localhost:5000/api/it-staff/${newStaff._id}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
       } else {
-        // ถ้าไม่มี _id ก็เป็นการเพิ่ม
         await axios.post('http://localhost:5000/api/it-staff', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
@@ -82,8 +125,7 @@ const AdminManager = () => {
         profilePic: null,
       });
 
-      const response = await axios.get('http://localhost:5000/api/it-staff');
-      setStaff(response.data);
+      fetchStaff(localStorage.getItem('authToken')); // รีเฟรชข้อมูลหลังจากบันทึก
     } catch (error) {
       console.error('Error saving staff data', error);
     }
@@ -97,8 +139,7 @@ const AdminManager = () => {
   const handleConfirmDelete = async () => {
     try {
       await axios.delete(`http://localhost:5000/api/it-staff/${staffToDelete}`);
-      const response = await axios.get('http://localhost:5000/api/it-staff');
-      setStaff(response.data);
+      fetchStaff(localStorage.getItem('authToken')); // รีเฟรชข้อมูลหลังจากลบ
       setShowAlert(false); // ปิด alert
     } catch (error) {
       console.error('Error deleting staff', error);
@@ -118,18 +159,17 @@ const AdminManager = () => {
       email: staffMember.email,
       description: staffMember.description,
       profilePic: staffMember.profilePic,
-      _id: staffMember._id, // เพิ่ม _id สำหรับการแก้ไข
+      _id: staffMember._id,
     });
   };
 
   return (
     <NavAdmin>
-   
-    {/* Main Container */}
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-center mb-6">IT Staff Manager</h1>
+      {/* Main Container */}
+      <div className="p-8 bg-gray-50 min-h-screen">
+        <h1 className="text-3xl font-bold text-center mb-6">IT Staff Manager</h1>
 
-      {/* Form Section */}
+        {/* Form Section */}
       <div className="flex justify-center mb-8">
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4 justify-center mb-6 max-w-4xl mx-auto">
           <div className="form-row">
@@ -224,68 +264,53 @@ const AdminManager = () => {
         </form>
       </div>
 
-      {/* Table Section */}
-      <div className="table-allstaff">
-
-        <table className="table-auto w-full border-collapse">
-
-        <thead className="table-header">
-            <tr>
+        {/* Table Section */}
+        <div className="table-allstaff">
+          <table className="table-auto w-full border-collapse">
+            <thead className="table-header">
+              <tr>
                 <th className="cell">First Name</th>
                 <th className="cell">Last Name</th>
                 <th className="cell">Position</th>
                 <th className="cell">Phone</th>
                 <th className="cell">Email</th>
                 <th className="cell">Actions</th>
-            </tr>
-        </thead>
+              </tr>
+            </thead>
 
-          <tbody>
-            {staff.map((staffMember) => (
-             <tr key={staffMember._id} className="hover-row">
-             <td className="cell">{staffMember.firstName}</td>
-             <td className="cell">{staffMember.lastName}</td>
-             <td className="cell">{staffMember.position}</td>
-             <td className="cell">{staffMember.phone}</td>
-             <td className="cell">{staffMember.email}</td>
-             <td className="cell buttons">
-               <button
-                 onClick={() => handleEdit(staffMember)}
-                 className="edit-btn"
-               >
-                 Edit
-               </button>
-               <button
-                 onClick={() => handleDeleteStaff(staffMember._id)}
-                 className="delete-btn"
-               >
-                 Delete
-               </button>
-             </td>
-           </tr>           
-            
-            ))}
-          </tbody>
-        </table>
+            <tbody>
+              {staff.map((staffMember) => (
+                <tr key={staffMember._id} className="hover-row">
+                  <td className="cell">{staffMember.firstName}</td>
+                  <td className="cell">{staffMember.lastName}</td>
+                  <td className="cell">{staffMember.position}</td>
+                  <td className="cell">{staffMember.phone}</td>
+                  <td className="cell">{staffMember.email}</td>
+                  <td className="cell buttons">
+                    <button onClick={() => handleEdit(staffMember)} className="edit-btn">Edit</button>
+                    <button onClick={() => handleDeleteStaff(staffMember._id)} className="delete-btn">Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-</div>
-
-      {/* Delete Confirmation Alert - Fixed Position */}
+      {/* Delete Confirmation Alert */}
       {showAlert && (
         <div className="alert-overlay">
-            <div className="alert-box">
+          <div className="alert-box">
             <h2>Are you sure?</h2>
             <p>This action cannot be undone.</p>
             <div className="alert-buttons">
-                <button className="cancel" onClick={handleCancelDelete}>Cancel</button>
-                <button className="confirm" onClick={handleConfirmDelete}>Yes, delete it!</button>
+              <button className="cancel" onClick={handleCancelDelete}>Cancel</button>
+              <button className="confirm" onClick={handleConfirmDelete}>Yes, delete it!</button>
             </div>
-            </div>
+          </div>
         </div>
-        )}
-  </NavAdmin>
-
+      )}
+    </NavAdmin>
   );
 };
 

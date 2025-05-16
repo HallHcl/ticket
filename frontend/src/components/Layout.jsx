@@ -143,7 +143,7 @@ const LayoutComponent = ({ children }) => {
               <li><Link to="/it-staff">IT Staff</Link></li>
               <li><Link to="/news">News</Link></li>
               {isLoggedIn && (
-                <li><Link to="/user-dashboard">Tickets</Link></li>
+                <li><Link to="/user-dashboard">Open Tickets</Link></li>
               )}
          
 <li className="manuals">

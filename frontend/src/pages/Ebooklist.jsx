@@ -66,60 +66,70 @@ const ebooks = [
     title: "Language Settings",
     description: "การตั้งค่าภาษาใน",
     category: "Language",
+    path: "/language", // เพิ่ม path ที่นี่
   },
   {
     id: 3,
     title: "Time Settings",
     description: "การตั้งค่าเวลาและการซิงค์เวลา",
     category: "Time",
+    path: "/time", // เพิ่ม path ที่นี่
   },
   {
     id: 4,
     title: "Initial Setup",
     description: "ขั้นตอนการตั้งค่าเริ่มต้น",
     category: "Initial",
+    path: "/initial", // เพิ่ม path ที่นี่
   },
   {
     id: 5,
     title: "Policy Management",
     description: "การจัดการนโยบาย",
     category: "Policy",
+    path: "/policy", // เพิ่ม path ที่นี่
   },
   {
     id: 6,
     title: "Security Settings",
     description: "การตั้งค่าความปลอดภัย",
     category: "Security",
+    path: "/security", // เพิ่ม path ที่นี่
   },
   {
     id: 7,
     title: "Maintenance Guide",
     description: "คู่มือการบำรุงรักษา",
     category: "Maintenance",
+    path: "/maintenance", // เพิ่ม path ที่นี่
   },
   {
     id: 8,
     title: "Storage Management",
     description: "การจัดการพื้นที่จัดเก็บข้อมูล",
     category: "Storage",
+    path: "/storage", // เพิ่ม path ที่นี่
   },
   {
     id: 9,
     title: "Install Windows",
     description: "ทิปและเทคนิคสำหรับ Windows",
     category: "Windows",
+    path: "/notebook-ebook", // เพิ่ม path ที่นี่
   },
   {
     id: 10,
     title: "Brother Printer",
     description: "คู่มือการใช้งานเครื่องพิมพ์ Brother",
     category: "Brother",
+    path: "/brother-ebook", // เพิ่ม path ที่นี่
   },
   {
     id: 11,
     title: "Epson Printer",
     description: "คู่มือการใช้งานเครื่องพิมพ์ Epson",
     category: "Epson",
+    path: "/epson-ebook", // เพิ่ม path ที่นี่
   },
 ];
 

@@ -385,6 +385,19 @@ app.delete('/api/it-staff/:id', async (req, res) => {
   }
 });
 
+// DELETE: Delete user by ID
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting user:', err);
+    res.status(500).json({ message: 'Error deleting user' });
+  }
+});
 
 
 app.use('/api/auth', authRoutes);

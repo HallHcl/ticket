@@ -253,3 +253,8 @@
 .user-management-modal-actions .btn:hover {
   filter: brightness(110%);
 }
+
+.pagination-btn:hover:not(:disabled) {
+  background: #4fa1ff !important;
+  box-shadow: 0 4px 16px #1976d244 !important;
+}

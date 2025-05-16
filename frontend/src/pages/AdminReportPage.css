@@ -1,4 +1,4 @@
-/* ปรับ layout หลัก */
+ปรับ layout หลัก
 .admin-dashboard {
   padding: 1.5rem;
   background-color: var(--bg-light);
@@ -62,40 +62,69 @@
 }
 
 /* ฟอร์มกรองวันที่ */
+/* ...existing code... */
+
 .filter-section {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1rem;
+  align-items: center;
+  gap: 2rem;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.5rem;
 }
 
 .filter-section .date-inputs {
   display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
-}
-
-.filter-section .button-group {
-  margin-left: auto;
-  display: flex;
-  gap: 0.5rem;
 }
 
 .filter-section label {
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text-dark);
-  gap: 5px; /* เพิ่มระยะห่างระหว่าง label กับ input */
+  gap: 8px;
+  margin-bottom: 0;
 }
 
-.filter-section input[type="date"] {
-  padding: 6px 10px;
-  border: 1px solid #ccc;
+.filter-section input[type="date"],
+.filter-section select {
+  padding: 7px 12px;
+  border: 1px solid #cbd5e1;
   border-radius: var(--border-radius);
-  font-size: 14px;
+  font-size: 15px;
+  background: #f9fafb;
+  transition: border 0.2s;
+  min-width: 140px;
+}
+
+.filter-section input[type="date"]:focus,
+.filter-section select:focus {
+  border: 1.5px solid var(--primary-color);
+  outline: none;
+  background: #fff;
+}
+
+.status-dropdown {
+  min-width: 170px;
+}
+
+.filter-section .button-group {
+  margin-left: auto;
+  display: flex;
+  gap: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .filter-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .filter-section .button-group {
+    margin-left: 0;
+    justify-content: flex-start;
+  }
 }
 
 
