@@ -121,11 +121,13 @@ footer {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
   border: 1px solid #dee2e6;
+   margin-bottom: 20px;
 }
 
 .card-header-box {
   text-align: left;
   margin-bottom: 20px;
+  
 }
 
 .card-header {
@@ -230,5 +232,36 @@ footer {
   footer {
     padding: 15px 10px;
     font-size: 14px; /* ลดขนาดฟอนต์ใน footer สำหรับมือถือ */
+  }
+}
+
+.carousel-banner-img {
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+  object-fit: cover;
+}
+
+@media (max-width: 1200px) {
+  .carousel-banner-img {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-banner-img {
+    max-height: 180px;
+  }
+}
+
+.carousel-section {
+
+  margin-bottom: 32px;
+}
+
+@media (max-width: 768px) {
+  .carousel-section {
+    margin-top: 16px;
+    margin-bottom: 16px;
   }
 }

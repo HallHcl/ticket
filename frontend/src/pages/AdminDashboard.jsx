@@ -67,9 +67,6 @@ const AdminDashboard = () => {
   })
   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // เรียงล่าสุดอยู่บนสุด
 
-  
-
-
   const ticketStats = {
     total: tickets.length,
     pending: tickets.filter(ticket => ticket.status === 'PENDING').length,
@@ -234,27 +231,32 @@ const handleIssueTypeFilter = (issueType) => {
                     <span className="info-label">AnyDesk:</span>
                     <span className="info-value">{ticket.anydeskNumber || 'Not provided'}</span>
                   </div>
-                  <div className="ticket-details">
-                    <span className="info-label">Details:</span>
-                    <p>{ticket.details}</p>
-                  </div>
+                 <div className="ticket-details">
+  <span className="info-label">Details:</span>
+  <p>
+    {ticket.details.length > 50 
+      ? ticket.details.slice(0, 30) + "..." 
+      : ticket.details
+    }
+  </p>
+</div>
                 </div>
                 <div className="ticket-footer">
             <select
-  value={ticket.status || 'WAIT FOR ASSET'}
-  onChange={(e) => {
-    e.stopPropagation();
-    updateTicketStatus(ticket._id, e.target.value);
-  }}
-  onClick={(e) => e.stopPropagation()} // เพิ่มบรรทัดนี้
->
-  <option value="WAIT FOR ASSET">WAIT FOR ASSET</option>
-  <option value="WORK IN PROGRESS">WORK IN PROGRESS</option>
-  <option value="PENDING">PENDING</option>
-  <option value="CHECKING">CHECKING</option>
-  <option value="CANCELLED">CANCELLED</option>
-  <option value="COMPLETED">COMPLETED</option>
-</select>
+              value={ticket.status || 'WAIT FOR ASSET'}
+              onChange={(e) => {
+                e.stopPropagation();
+                updateTicketStatus(ticket._id, e.target.value);
+              }}
+              onClick={(e) => e.stopPropagation()} // เพิ่มบรรทัดนี้
+            >
+              <option value="WAIT FOR ASSET">WAIT FOR ASSET</option>
+              <option value="WORK IN PROGRESS">WORK IN PROGRESS</option>
+              <option value="PENDING">PENDING</option>
+              <option value="CHECKING">CHECKING</option>
+              <option value="CANCELLED">CANCELLED</option>
+              <option value="COMPLETED">COMPLETED</option>
+            </select>
                 </div>
               </div>
             ))}

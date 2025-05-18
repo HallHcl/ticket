@@ -21,24 +21,40 @@ async function generateUniqueId() {
 
 // Register route
 router.post('/register', async (req, res) => {
-    const { username, password, role } = req.body;
+  const users = req.body; // คาดว่าเป็น array ของผู้ใช้
 
-    try {
-        const existingUser = await User.findOne({ username });
-        if (existingUser) return res.status(400).json({ message: 'Username already exists' });
+  try {
+    const results = [];
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newId = await generateUniqueId(); // สร้าง id ใหม่แบบไม่ซ้ำ
+    for (const user of users) {
+      const { username, password, role } = user;
+      const existingUser = await User.findOne({ username });
+      if (existingUser) {
+        results.push({ username, status: 'duplicate' });
+        continue;
+      }
 
-        const newUser = new User({ id: newId, username, password: hashedPassword, role });
-        await newUser.save();
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newId = Date.now().toString() + Math.floor(Math.random() * 1000); // unique id
 
-        res.status(201).json({ message: 'User created successfully', id: newId });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Something went wrong' });
+      const newUser = new User({
+        id: newId,
+        username,
+        password: hashedPassword,
+        role
+      });
+
+      await newUser.save();
+      results.push({ username, status: 'created', id: newId });
     }
+
+    res.status(201).json({ message: 'Batch registration complete', results });
+  } catch (error) {
+    console.error('Batch register error:', error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
 });
+
 
 // Login route
 router.post('/login', async (req, res) => {

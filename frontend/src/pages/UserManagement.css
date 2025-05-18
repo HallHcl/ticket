@@ -35,7 +35,7 @@
 }
 
 .table-container {
-  overflow-x: auto;
+  overflow: visible;
 }
 
 .user-table {
@@ -131,16 +131,20 @@
 }
 
 .dropdown-menu {
+  position: absolute;
   left: 50% !important;
+  top: 100%; /* เพิ่มบรรทัดนี้ */
+  right: auto;
   transform: translateX(-50%);
   min-width: 160px;
   padding: 0;
   border-radius: 8px;
-  box-shadow: none;
+  box-shadow: 0 2px 8px #1976d233;
   border: none;
   margin-top: 4px;
   background: #fff;
-  overflow: hidden; /* ให้ขอบโค้งมนของเมนูมีผลกับปุ่ม */
+  overflow: visible;
+  z-index: 9999;
 }
 
 .dropdown-item {

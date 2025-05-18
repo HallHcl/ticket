@@ -16,6 +16,8 @@ const UserDashboard = () => {
   const [userId, setUserId] = useState(null);
   const [userTickets, setUserTickets] = useState([]);
   const [attachment, setAttachment] = useState(null);
+  const [branchCodes, setBranchCodes] = useState([]);
+  const [showBranchDropdown, setShowBranchDropdown] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +35,12 @@ const UserDashboard = () => {
     } else {
       navigate('/login');
     }
-  }, [navigate]);  
+
+    // ดึง branch code ทั้งหมด
+  axios.get('http://localhost:5000/api/branchcode/getbranchcode')
+    .then(res => setBranchCodes(res.data))
+    .catch(err => console.error('Error fetching branch codes:', err));
+}, [navigate]);
 
   const fetchUserTickets = async (uid, token) => {
     try {
@@ -145,15 +152,58 @@ const UserDashboard = () => {
 
           <form onSubmit={handleSubmit}>
             <div className="form-row">
-              <div className="input-group">
-                <label>รหัสสาขา</label>
-                <input
-                  type="text"
-                  value={branchCode}
-                  onChange={(e) => setBranchCode(e.target.value)}
-                  required
-                />
-              </div>
+ 
+<div className="input-group" style={{ position: 'relative' }}>
+  <label>รหัสสาขา</label>
+  <input
+    type="text"
+    className="branch-input"
+    value={branchCode}
+    autoComplete="off"
+    placeholder="พิมพ์รหัสสาขา..."
+    onFocus={() => setShowBranchDropdown(true)}
+    onBlur={() => setTimeout(() => setShowBranchDropdown(false), 150)}
+    onChange={(e) => {
+      const value = e.target.value.toUpperCase();
+      setBranchCode(value);
+      setShowBranchDropdown(true);
+    }}
+    required
+  />
+  {showBranchDropdown && branchCode && (
+    <div className="branch-dropdown">
+      {branchCodes
+        .filter((b) =>
+          b.branchCode.toLowerCase().startsWith(branchCode.toLowerCase())
+        )
+        .slice(0, 10)
+        .map((b) => (
+          <div
+            key={b._id}
+            className="branch-dropdown-item"
+            onMouseDown={() => {
+              setBranchCode(`${b.branchCode} - ${b.branchName}`);
+              setShowBranchDropdown(false);
+            }}
+          >
+            <span className="branch-dropdown-icon">🏢</span>
+              <span className="branch-dropdown-text">
+                {b.branchCode} - {b.branchName}
+              </span>
+          </div>
+        ))}
+      {branchCodes.filter((b) =>
+        b.branchCode.toLowerCase().startsWith(branchCode.toLowerCase())
+      ).length === 0 && (
+        <div className="branch-dropdown-item branch-dropdown-noresult">
+          ไม่พบรหัสสาขา
+        </div>
+      )}
+    </div>
+  )}
+</div>
+
+
 
               <div className="input-group">
                 <label>หมายเลข AnyDesk (ไม่บังคับ)</label>

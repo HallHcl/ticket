@@ -46,18 +46,24 @@ function UserManagement() {
   }, []);
 
   const fetchUsers = async (token) => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/users', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setUsers(response.data);
-      setFilteredUsers(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch users');
-      setLoading(false);
-    }
-  };
+  try {
+    const response = await axios.get('http://localhost:5000/api/users', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    // เรียง admin ไว้บนสุด
+    const sorted = response.data.sort((a, b) => {
+      if (a.role === 'admin' && b.role !== 'admin') return -1;
+      if (a.role !== 'admin' && b.role === 'admin') return 1;
+      return 0;
+    });
+    setUsers(sorted);
+    setFilteredUsers(sorted);
+    setLoading(false);
+  } catch (err) {
+    setError('Failed to fetch users');
+    setLoading(false);
+  }
+};
 
   const handleSearch = (e) => {
     const keyword = e.target.value;

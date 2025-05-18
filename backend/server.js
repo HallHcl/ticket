@@ -9,6 +9,8 @@ const User = require('./models/User'); // Uncomment this line
 const authRoutes = require('./routes/auth');
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs'); // ใส่ไว้ด้านบนของไฟล์ หากยังไม่ได้ import
+const sendEmail = require('./utils/sendEmail'); // เพิ่มบรรทัดนี้
+const branchcodeRoutes = require('./routes/branchcode');
 const app = express();
 const port = 5000;
 
@@ -253,9 +255,11 @@ app.put('/api/users/:id/role', async (req, res) => {
 // Reset password ให้ user
 app.post('/api/users/:id/reset-password', async (req, res) => {
   try {
-    const defaultPassword = 'NTB111223';
-    const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+    // สุ่มรหัสผ่านใหม่
+    const newPassword = Math.random().toString(36).slice(-8);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
+    // หา user ตาม _id
     const user = await User.findByIdAndUpdate(
       req.params.id,
       { password: hashedPassword },
@@ -266,7 +270,27 @@ app.post('/api/users/:id/reset-password', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    res.status(200).json({ message: 'Password reset successfully' });
+    // ส่งอีเมลไปยัง user.username (ซึ่งเป็นอีเมล)
+    await sendEmail(
+  user.username,
+  'แจ้งเตือนการรีเซ็ตรหัสผ่าน - Turbo Finance',
+  `เรียน คุณ${user.username},
+
+    บริษัท Turbo Finance ขอแจ้งให้ทราบว่า รหัสผ่านของท่านได้ถูกรีเซ็ตเรียบร้อยแล้ว
+
+    รหัสผ่านใหม่ของท่านคือ: **${newPassword}**
+
+    โปรดทำการเปลี่ยนรหัสผ่านใหม่ทันทีหลังจากเข้าสู่ระบบเพื่อความปลอดภัย
+
+    หากท่านไม่ได้ร้องขอการเปลี่ยนรหัสผ่านนี้ กรุณาติดต่อฝ่ายสนับสนุนของเราโดยด่วน
+
+    ขอแสดงความนับถือ  
+    ทีมงาน Turbo Finance
+    `
+    );
+
+
+    res.status(200).json({ message: 'Password reset and sent to user email.' });
   } catch (error) {
     console.error('Reset password error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -401,6 +425,7 @@ app.delete('/api/users/:id', async (req, res) => {
 
 
 app.use('/api/auth', authRoutes);
+app.use('/api/branchcode', branchcodeRoutes);
 
 
 // Start the server
