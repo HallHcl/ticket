@@ -15,7 +15,7 @@ import './HomeStyle.css';
 const Home = () => {
 
   const [announcements, setAnnouncements] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, ] = useState('');
   const [selectedNews, setSelectedNews] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -164,15 +164,7 @@ const Home = () => {
         {/* Card Section Carousel */}
         <section id="cardSectionCarousel" className="content-section">
           <div className="card-content">
-            <small className="text-muted mb-0">ค้นหาข้อมูลในหน้านี้:</small>
-            <input
-              type="text"
-              className="form-control form-control-sm"
-              style={{ maxWidth: '300px' }}
-              placeholder="ค้นหา..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+          
             <div className="card-header-box">
               <div className="card-header">📖 E-Book</div>
             </div>

@@ -16,19 +16,37 @@ const LoginPage = () => {
   try {
     const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
 
+    const user = response.data.user;
+    if (user.isActive === false) {
+      setErrorMessage('Your account is deactivated. Please contact admin.');
+      return;
+    }
+
     localStorage.setItem('authToken', response.data.token);
 
-    // Check user role and navigate accordingly
-    const userRole = response.data.user?.role;
+    const userRole = user.role;
     if (userRole === 'admin') {
       navigate('/admin-dashboard');
     } else {
       navigate('/');
     }
   } catch (error) {
-    setErrorMessage('Invalid credentials, please try again.');
+    if (error.response) {
+      // ถ้ามี response กลับมาจาก server
+      if (error.response.status === 403) {
+        setErrorMessage('Your account is deactivated. Please contact admin.');
+      } else if (error.response.status === 401) {
+        setErrorMessage('Invalid credentials, please try again.');
+      } else {
+        setErrorMessage('Something went wrong. Please try again.');
+      }
+    } else {
+      setErrorMessage('Cannot connect to server.');
+    }
   }
 };
+
+
 
 
   return (

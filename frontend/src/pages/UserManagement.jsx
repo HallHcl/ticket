@@ -5,8 +5,6 @@ import axios from 'axios';
 import NavAdmin from '../components/NavbarAdmin';
 import './UserManagement.css';
 
-// ...existing code...
-
 function UserManagement() {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -15,7 +13,6 @@ function UserManagement() {
   const [error, setError] = useState('');
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState(null);
 
@@ -45,25 +42,26 @@ function UserManagement() {
     }
   }, []);
 
+
   const fetchUsers = async (token) => {
-  try {
-    const response = await axios.get('http://localhost:5000/api/users', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    // เรียง admin ไว้บนสุด
-    const sorted = response.data.sort((a, b) => {
-      if (a.role === 'admin' && b.role !== 'admin') return -1;
-      if (a.role !== 'admin' && b.role === 'admin') return 1;
-      return 0;
-    });
-    setUsers(sorted);
-    setFilteredUsers(sorted);
-    setLoading(false);
-  } catch (err) {
-    setError('Failed to fetch users');
-    setLoading(false);
-  }
-};
+    try {
+      const response = await axios.get('http://localhost:5000/api/users', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      // เรียง admin ไว้บนสุด
+      const sorted = response.data.sort((a, b) => {
+        if (a.role === 'admin' && b.role !== 'admin') return -1;
+        if (a.role !== 'admin' && b.role === 'admin') return 1;
+        return 0;
+      });
+      setUsers(sorted);
+      setFilteredUsers(sorted);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch users');
+      setLoading(false);
+    }
+  };
 
   const handleSearch = (e) => {
     const keyword = e.target.value;
@@ -99,6 +97,21 @@ function UserManagement() {
     }
   };
 
+ const handleToggleActive = async (id, currentStatus) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    await axios.put(
+      `http://localhost:5000/api/users/${id}/status`,
+      { isActive: !currentStatus },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    fetchUsers(token);
+    setOpenDropdownId(null);
+  } catch (err) {
+    alert('Failed to update user status');
+  }
+};
+
   const handleRoleChange = async (id, newRole) => {
     try {
       await axios.put(
@@ -113,25 +126,6 @@ function UserManagement() {
     } catch (err) {
       alert('Failed to change role');
     }
-  };
-
-  const handleResetPassword = async (id) => {
-    try {
-      await axios.post(`http://localhost:5000/api/users/${id}/reset-password`);
-      alert('Password reset successfully');
-      setOpenDropdownId(null);
-    } catch (err) {
-      alert('Failed to reset password');
-    }
-  };
-
-  const getStatus = (lastLogin) => {
-    if (!lastLogin) return 'Inactive';
-    const lastLoginDate = new Date(lastLogin);
-    const currentDate = new Date();
-    const diffTime = Math.abs(currentDate - lastLoginDate);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays <= 7 ? 'Active' : 'Inactive';
   };
 
   React.useEffect(() => {
@@ -240,14 +234,13 @@ function UserManagement() {
                       <td>
                         <span
                           className={`status-badge ${
-                            getStatus(user.lastLogin) === 'Active'
-                              ? 'status-active'
-                              : 'status-inactive'
+                            user.isActive ? 'status-active' : 'status-inactive'
                           }`}
                         >
-                          {getStatus(user.lastLogin)}
+                          {user.isActive ? 'Active' : 'Inactive'}
                         </span>
                       </td>
+
                       <td className="action-buttons column-buttons">
                         <div className="dropdown" style={{ position: 'relative' }}>
                           <button
@@ -283,11 +276,20 @@ function UserManagement() {
                               {user.role === 'admin' ? <FaUser /> : <FaUserShield />}
                               {user.role === 'admin' ? ' Make User' : ' Make Admin'}
                             </button>
-                            <button
-                              onClick={() => handleResetPassword(user._id)}
-                              className="dropdown-item"
+                             <button
+                              onClick={() => handleToggleActive(user._id, user.isActive)}
+                              className={`dropdown-item`}
+                              style={{
+                            
+                                fontWeight: user.isActive ? 'bold' : 'normal',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                              }}
                             >
-                              <FaRedo /> Reset Password
+                              <FaRedo />
+                              {user.isActive ? 'Deactivate' : 'Activate'}
                             </button>
                             <button
                               onClick={() => openDeleteModal(user._id)}
@@ -339,26 +341,24 @@ function UserManagement() {
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages || totalPages === 0}
                 style={{
-                  background: (currentPage === totalPages || totalPages === 0) ? '#e0e0e0' : '#1976d2',
-                  color: (currentPage === totalPages || totalPages === 0) ? '#888' : '#fff',
+                  background: currentPage === totalPages || totalPages === 0 ? '#e0e0e0' : '#1976d2',
+                  color: currentPage === totalPages || totalPages === 0 ? '#888' : '#fff',
                   border: 'none',
                   borderRadius: '20px',
                   padding: '8px 24px',
                   fontWeight: 'bold',
-                  cursor: (currentPage === totalPages || totalPages === 0) ? 'not-allowed' : 'pointer',
-                  boxShadow: (currentPage === totalPages || totalPages === 0) ? 'none' : '0 2px 8px #1976d233',
+                  cursor: currentPage === totalPages || totalPages === 0 ? 'not-allowed' : 'pointer',
+                  boxShadow: currentPage === totalPages || totalPages === 0 ? 'none' : '0 2px 8px #1976d233',
                   transition: 'all 0.2s'
-                }}
-              >
-                Next &#8594;
-              </button>
-            </div>
-          </div>
+                }}>
+            Next &#8594;
+          </button>
         </div>
-      </NavAdmin>
-    </>
-  );
+      </div>
+    </div>
+  </NavAdmin>
+</>
+);
 }
 
 export default UserManagement;
-// ...existing code...

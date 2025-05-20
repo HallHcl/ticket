@@ -223,34 +223,6 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-// เปลี่ยน role ของผู้ใช้งาน
-app.put('/api/users/:id/role', async (req, res) => {
-  const { role } = req.body;
-
-  if (!role) {
-    return res.status(400).json({ message: 'Role is required' });
-  }
-
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { role },
-      { new: true }
-    );
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    res.status(200).json({
-      message: 'User role updated successfully',
-      user,
-    });
-  } catch (error) {
-    console.error('Error updating user role:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
 
 // Reset password ให้ user
 app.post('/api/users/:id/reset-password', async (req, res) => {
@@ -420,6 +392,58 @@ app.delete('/api/users/:id', async (req, res) => {
   } catch (err) {
     console.error('Error deleting user:', err);
     res.status(500).json({ message: 'Error deleting user' });
+  }
+});
+
+app.put('/api/users/:id/status', async (req, res) => {
+  const userId = req.params.id;
+  const { isActive } = req.body;
+
+  if (typeof isActive !== 'boolean') {
+    return res.status(400).json({ message: 'isActive must be boolean' });
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.isActive = isActive;
+    await user.save();
+
+    res.status(200).json({ message: `User has been ${isActive ? 'activated' : 'deactivated'}` });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
+
+// เปลี่ยน role ของผู้ใช้งาน
+app.put('/api/users/:id/role', async (req, res) => {
+  const { role } = req.body;
+
+  if (!role) {
+    return res.status(400).json({ message: 'Role is required' });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { role },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({
+      message: 'User role updated successfully',
+      user,
+    });
+  } catch (error) {
+    console.error('Error updating user role:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

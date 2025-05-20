@@ -5,7 +5,9 @@ const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, required: true },
-  lastLogin: { type: Date, default: null } // ✅ เพิ่มตรงนี้
+  lastLogin: { type: Date, default: null },
+  isActive: { type: Boolean, default: true }  // เพิ่มตรงนี้
 });
+
 
 module.exports = mongoose.model('User', UserSchema);

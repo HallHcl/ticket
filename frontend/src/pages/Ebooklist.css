@@ -8,19 +8,20 @@
 
 .ebook-header-row {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  align-items: center; /* จัดให้ h1 กับ input อยู่ตรงกลางแนวตั้ง */
+  gap: 1rem; /* ระยะห่างระหว่าง h1 กับ input */
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 .ebook-header {
-  margin-bottom: 0;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: bold;
-  line-height: 1;
-  height: 48px; /* ปรับให้ใกล้เคียงกับ input */
+  height: 48px;
   display: flex;
   align-items: center;
+  line-height: 1;
+  margin: 0; /* ลบ default margin ของ h1 */
 }
 
 .ebook-search {
@@ -30,10 +31,11 @@
   border-radius: 1.5rem;
   border: 2px solid #222;
   outline: none;
-  height: 48px; /* ปรับให้เท่ากับ h1 */
+  height: 48px;
   box-sizing: border-box;
   margin: 0;
 }
+
 
 .category-list {
   display: grid;

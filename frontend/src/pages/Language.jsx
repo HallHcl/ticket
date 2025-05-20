@@ -3,6 +3,7 @@ import HTMLFlipBook from "react-pageflip";
 import LayoutComponent from "../components/Layout";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import "./Ebook.css";
 
 function Language() {
   const pages = [

@@ -106,14 +106,10 @@
 .controls {
   display: flex;
   justify-content: center;
-  gap: 20px; /* Increased gap for better spacing */
-  position: absolute;
-  top: -60px; /* Adjust as needed for vertical positioning */
-  left: 50%;
-  transform: translateX(-50%); /* Center the buttons horizontally */
-  width: 100%; /* Allow buttons to spread if needed */
-  padding: 10px 0; /* Add some padding above and below the buttons */
+  gap: 20px;
+  margin-top: 30px; /* ดันลงมาข้างล่าง */
 }
+
 
 .controls button {
   padding: 12px 24px; /* Increased padding */
