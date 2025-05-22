@@ -7,19 +7,10 @@ import "./Ebook.css";
 
 function Policy() {
   const pages = [
-    {
-      title: "⚙️ หน้าที่ 7: การตั้งค่าตามนโยบายของ Turbo Finance",
-      content: (
-        <div style={{ textAlign: 'left' }}>
-          <ol>
-            <li>ตั้งค่าความปลอดภัยและรหัสผ่าน</li>
-            <li>ติดตั้งซอฟต์แวร์ที่ได้รับอนุญาต</li>
-            <li>เปิดใช้งาน VPN และไฟร์วอลล์</li>
-          </ol>
-        </div>
-      ),
-      imageSrc: "path/to/image7.png",
-    }
+    { imageSrc: "/images/68.png" },
+    { imageSrc: "/images/test01.png", heading: "ตั้งค่าความปลอดภัยและรหัสผ่านของคุณเอง" },
+    { imageSrc: "/images/test03.png", heading: "ติดตั้งซอฟต์แวร์ที่ได้รับอนุญาต" },
+    { imageSrc: "/images/test02.png", heading: "เปิด VPN ทุกครั้งและนำข้อมูลเข้า Google Drive เพื่อกันข้อมูลหาย" }, // เพิ่มหัวข้อที่นี่
   ];
 
   const flipbookRef = useRef();
@@ -36,7 +27,7 @@ function Policy() {
 
     for (let i = 0; i < pages.length; i++) {
       book.turnToPage(i);
-      await new Promise((r) => setTimeout(r, 100)); // รอให้หน้าโหลดเสร็จ
+      await new Promise((r) => setTimeout(r, 100)); // Wait for the page to load
 
       const page = book.getPage(i);
       if (!page || !page.element) {
@@ -61,46 +52,85 @@ function Policy() {
     pdf.save("Policy.pdf");
   };
 
-  const turnToPageWithAnimation = (pageIndex) => {
-    if (!flipbookRef.current) {
-      console.error("flipbookRef.current is null");
-      return;
-    }
-
-    const book = flipbookRef.current.pageFlip();
-    if (book) {
-      book.turnToPage(pageIndex);
-    } else {
-      console.error("Could not access pageFlip instance");
-    }
-  };
-
   return (
     <LayoutComponent>
       <div className="ebook-container">
-        <div className="sidebar">
-          <h3>สารบัญ</h3>
-          <ul>
-            {pages.map((page, index) => (
-              <li key={index}>
-                <button onClick={() => turnToPageWithAnimation(index)}>
-                  {page.title}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
         <div className="content">
-          <button className="download-btn" onClick={downloadPDF}>
-            📥 Download PDF
-          </button>
-          <HTMLFlipBook width={600} height={600} className="flipbook" ref={flipbookRef}>
+                <div className="controls" style={{ marginBottom: "1rem", display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <button onClick={() => flipbookRef.current.pageFlip().flipPrev()}>⬅ Previous</button>
+            <button onClick={downloadPDF}>📥 Download PDF</button>
+            <button onClick={() => flipbookRef.current.pageFlip().flipNext()}>Next ➡</button>
+          </div>
+          <HTMLFlipBook width={600} height={800} className="flipbook" ref={flipbookRef}>
             {pages.map((page, index) => (
-              <div key={index} className="page">
-                <h2>{page.title}</h2>
-                {page.content}
-                {page.imageSrc && <img src={page.imageSrc} alt={`Page ${index + 1}`} />}
+              <div
+                key={index}
+                className="page"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start', // เปลี่ยนเป็น flex-start เพื่อจัดหัวข้อไว้ด้านบน
+                  alignItems: 'center',
+                  position: "relative",
+                  paddingTop: page.headings ? '20px' : '10px', // เพิ่ม padding ด้านบนถ้ามีหลายหัวข้อ
+                }}
+              >
+                {page.headings && page.headings.map((heading, headingIndex) => (
+                  <div
+                    key={headingIndex}
+                    style={{
+                      backgroundColor: '#FFA726',
+                      border: '2px solid #E64A19',
+                      borderRadius: '5px',
+                      padding: '15px 20px',
+                      marginBottom: '10px',
+                      fontFamily: "'Arial', sans-serif",
+                      fontWeight: 'bold',
+                      color: 'black',
+                      fontSize: '1.24em',
+                      display: 'inline-block',
+                      textAlign: 'center',
+                      width: '80%', // กำหนดความกว้างให้หัวข้อ (ปรับตามต้องการ)
+                    }}
+                  >
+                    {heading}
+                  </div>
+                ))}
+                {!page.headings && page.heading && (
+                  <div style={{
+                    backgroundColor: '#FFA726',
+                    border: '2px solid #E64A19',
+                    borderRadius: '5px',
+                    padding: '15px 20px',
+                    marginBottom: '10px',
+                    fontFamily: "'Arial', sans-serif",
+                    fontWeight: 'bold',
+                    color: 'black',
+                    fontSize: '1.24em',
+                    display: 'inline-block',
+                    textAlign: 'center',
+                    width: '80%', // กำหนดความกว้างให้หัวข้อ (ปรับตามต้องการ)
+                  }}>
+                    {page.heading}
+                  </div>
+                )}
+                {page.imageSrc && (
+                  <img
+                    src={page.imageSrc}
+                    alt={`Page ${index + 1}`}
+                    className="page-image"
+                    style={{
+                      width: '90%',
+                      height: '90%',
+                      objectFit: 'contain',
+                      borderRadius: '0px',
+                      marginTop: page.headings ? '10px' : '0',
+                    }}
+                  />
+                )}
+                <div className="page-number" style={{ position: "absolute", bottom: 10, right: 20, fontSize: "14px" }}>
+                  📄 {index + 1}
+                </div>
               </div>
             ))}
           </HTMLFlipBook>

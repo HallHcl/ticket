@@ -140,7 +140,7 @@ const NavbarAdmin = ({ children }) => {
           <nav className="nav-links">
             <ul>
               <li><Link to="/admin-dashboard">Dashboard</Link></li>
-              <li><Link to="/admin-maneger">Staff Manager</Link></li>
+              <li><Link to="/admin-maneger">Admin Staff</Link></li>
               <li><Link to="/admin-report">Report Tickets</Link></li>
               <li><Link to="/admin-management">Management</Link></li>
 

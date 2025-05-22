@@ -8,6 +8,7 @@ const LEADER_ID = '681799d46feee4bdd21630a3';
 
 // สร้างลำดับตำแหน่งที่เราต้องการ
 const positionRank = {
+  'Chief Technology Officer': 0, // ✅ เพิ่มตำแหน่งใหม่ที่นี่
   'IT Service Manager - M1': 1,
   'IT Service Supervisor - SUP1': 2,
   'Technical Service Agent - SU2': 3,
@@ -65,12 +66,21 @@ const ITStaffList = () => {
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
-          <select value={filterPosition} onChange={e => setFilterPosition(e.target.value)}>
-            <option value="">📌 ทุกตำแหน่ง</option>
-            {[...new Set(staffData.map(person => person.position))].map(position => (
-              <option key={position} value={position}>{position}</option>
-            ))}
-          </select>
+         <select value={filterPosition} onChange={e => setFilterPosition(e.target.value)}>
+  <option value="">📌 ทุกตำแหน่ง</option>
+  {[...new Set(staffData.map(person => person.position.trim()))]
+    .sort((a, b) => {
+      const rankA = positionRank[a] ?? Infinity;
+      const rankB = positionRank[b] ?? Infinity;
+      return rankA - rankB;
+    })
+    .map(position => (
+      <option key={position} value={position}>{position}</option>
+    ))
+  }
+</select>
+
+
         </div>
 
         <div className="staff-tree">

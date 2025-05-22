@@ -167,7 +167,11 @@ const AdminManager = () => {
     <NavAdmin>
       {/* Main Container */}
       <div className="p-8 bg-gray-50 min-h-screen">
-        <h1 className="text-3xl font-bold text-center mb-6">IT Staff Manager</h1>
+        <div className="it-staff-manager">
+        <h1 className="">
+              IT Staff Manager
+            </h1>
+            </div>
 
         {/* Form Section */}
       <div className="flex justify-center mb-8">

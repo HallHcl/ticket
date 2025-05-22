@@ -3,23 +3,24 @@ import HTMLFlipBook from "react-pageflip";
 import LayoutComponent from "../components/Layout";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import "./Ebook.css";
+
 
 function Language() {
   const pages = [
     { imageSrc: "/images/1.png" },
-    { imageSrc: "/images/2.png" },
-    { imageSrc: "/images/3.png" },
-    { imageSrc: "/images/4.png" },
+    { imageSrc: "/images/test08.png", heading: "ไปที่ช่อง Search" },
+    { imageSrc: "/images/test09.png", heading: "พิมพ์คำว่า Language Setting" },
+    { imageSrc: "/images/test10.png", heading: "ไปที่ Add a language แล้วเพิ่มภาษาที่ต้องการ" },
+    { imageSrc: "/images/test11.png", heading: "ไปที่หัวข้อ Window display language แล้วเลือกภาษาที่ต้องการ" },
     { imageSrc: "/images/5.png" },
-    { imageSrc: "/images/6.png" },
-    { imageSrc: "/images/7.png" },
-    { imageSrc: "/images/8.png" },
-    { imageSrc: "/images/9.png" },
-    { imageSrc: "/images/10.png" },
-    { imageSrc: "/images/11.png" },
-    { imageSrc: "/images/12.png" },
-    { imageSrc: "/images/13.png" }
+    { imageSrc: "/images/test08.png", heading: "ไปที่ช่อง Search" },
+    { imageSrc: "/images/test09.png", heading: "พิมพ์คำว่า Language Setting" },
+    { imageSrc: "/images/test10.png", heading: "ไปที่ Add a language แล้วเพิ่มภาษาที่ต้องการ" },
+    { imageSrc: "/images/test12.png", heading: "กดที่หัวข้อ Typing" },
+    { imageSrc: "/images/test13.png", heading: "หาหัวข้อ Advanced keyboard settings" },
+    { imageSrc: "/images/test14.png", heading: "กดไปที่ Input language hot keys" },
+    { imageSrc: "/images/test15.png", heading: "กดปุ่ม Change Key Sequence" },
+    { imageSrc: "/images/test16.png", heading: "เลือก Grace Accent(`)และเลือก Not Assigned" },
   ];
 
   const flipbookRef = useRef();
@@ -36,7 +37,7 @@ function Language() {
 
     for (let i = 0; i < pages.length; i++) {
       book.turnToPage(i);
-      await new Promise((r) => setTimeout(r, 100)); // รอให้หน้าโหลดเสร็จ
+      await new Promise((r) => setTimeout(r, 100)); // Wait for the page to load
 
       const page = book.getPage(i);
       if (!page || !page.element) {
@@ -65,11 +66,12 @@ function Language() {
     <LayoutComponent>
       <div className="ebook-container">
         <div className="content">
-          <div className="controls" style={{ marginBottom: "1rem" }}>
+          <div className="controls" style={{ marginBottom: "1rem", display: 'flex', gap: '8px', alignItems: 'center' }}>
             <button onClick={() => flipbookRef.current.pageFlip().flipPrev()}>⬅ Previous</button>
-            <button onClick={downloadPDF}>📥 Download PDF</button>
+            <button onClick={downloadPDF} >📥 Download PDF</button>
             <button onClick={() => flipbookRef.current.pageFlip().flipNext()}>Next ➡</button>
           </div>
+
           <HTMLFlipBook width={600} height={800} className="flipbook" ref={flipbookRef}>
             {pages.map((page, index) => (
               <div
@@ -77,21 +79,66 @@ function Language() {
                 className="page"
                 style={{
                   display: "flex",
-                  justifyContent: "center",
+                  flexDirection: "column", // Arrange items vertically
+                  justifyContent: "flex-start", // Align content to the top
                   alignItems: "center",
                   position: "relative",
-                  left: "500%",
+                  paddingTop: page.headings || page.heading ? '20px' : '10px', // Add top padding if there are headings
                 }}
               >
+                {/* Render multiple headings if 'headings' array exists */}
+                {page.headings && page.headings.map((heading, headingIndex) => (
+                  <div
+                    key={headingIndex}
+                    style={{
+                      backgroundColor: '#9999FF',
+                      border: '2px solid #330000',
+                      borderRadius: '5px',
+                      padding: '15px 20px',
+                      marginBottom: '10px',
+                      fontFamily: "'Arial', sans-serif",
+                      fontWeight: 'bold',
+                      color: 'black',
+                      fontSize: '1.24em',
+                      display: 'inline-block',
+                      textAlign: 'center',
+                      width: '80%', // Adjust width as needed
+                    }}
+                  >
+                    {heading}
+                  </div>
+                ))}
+                {/* Render single heading if 'heading' string exists and 'headings' array does not */}
+                {!page.headings && page.heading && (
+                  <div style={{
+                    backgroundColor: '#9999FF',
+                    border: '2px soli #330000',
+                    borderRadius: '5px',
+                    padding: '15px 20px',
+                    marginBottom: '10px',
+                    fontFamily: "'Arial', sans-serif",
+                    fontWeight: 'bold',
+                    color: 'black',
+                    fontSize: '1.24em',
+                    display: 'inline-block',
+                    textAlign: 'center',
+                    width: '80%', // Adjust width as needed
+                  }}>
+                    {page.heading}
+                  </div>
+                )}
                 {page.imageSrc && (
                   <img
                     src={page.imageSrc}
                     alt={`Page ${index + 1}`}
+                    className="page-image"
                     style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain", // ให้รูปเต็มหน้า
-                      borderRadius: "0", // ไม่ให้มีกรอบ
+                      width: '90%', // Adjust width as needed
+                      height: 'auto', // Allow height to adjust proportionally
+                      maxHeight: page.headings || page.heading ? 'calc(100% - 60px)' : '100%', // Adjust max height based on headings
+                      objectFit: 'contain',
+                      borderRadius: '0px',
+                      marginTop: page.headings || page.heading ? '10px' : '0', // Add margin if there are headings
                     }}
                   />
                 )}

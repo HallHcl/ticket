@@ -10,22 +10,22 @@ const NotebookEbook = () => {
 
   const pages = [
     { imageSrc: "/images/30.png" },
-    { imageSrc: "/images/31.png" },
-    { imageSrc: "/images/32.png" },
-    { imageSrc: "/images/33.png" },
-    { imageSrc: "/images/34.png" },
-    { imageSrc: "/images/35.png" },
-    { imageSrc: "/images/36.png" },
-    { imageSrc: "/images/37.png" },
-    { imageSrc: "/images/38.png" },
-    { imageSrc: "/images/39.png" },
-    { imageSrc: "/images/40.png" },
-    { imageSrc: "/images/41.png" },
-    { imageSrc: "/images/42.png" },
-    { imageSrc: "/images/43.png" },
-    { imageSrc: "/images/44.png" },
-    { imageSrc: "/images/45.png" },
-    { imageSrc: "/images/46.png" },
+    { imageSrc: "/images/test50.png", heading: "เสียบ Flash Drive Window เข้ากับ Notebook" },
+    { imageSrc: "/images/test51.png", heading: "Restart เครื่อง" },
+    { imageSrc: "/images/test52.png", heading: "ระหว่างที่ Restart ให้กดปุ่ม F10 ย้ำๆ" },
+    { imageSrc: "/images/test53.png", heading: "เลือกเมนู Boot Option และเลือก UEFI แล้วก็ชื่อ Flash Drive" },
+    { imageSrc: "/images/test54.png" },
+    { imageSrc: "/images/test55.png", heading: "Window Setup ให้เลือกภาษาอังกฤษ" },
+    { imageSrc: "/images/test56.png", heading: "หน้า Activate Windows ให้เลือก I don't have a product key" },
+    { imageSrc: "/images/test57.png", heading: "เลือก Version Windows ให้เป็น Windows 11 Pro" },
+    { imageSrc: "/images/test58.png", heading: "การแบ่ง Partition : ลบทั้งหมดให้เหลือ Drive เดียว" },
+    { imageSrc: "/images/test59.png" },
+    { imageSrc: "/images/test60.png", heading: "หัวข้อ Region: Thailand" },
+    { imageSrc: "/images/test61.png", heading: "หัวข้อ Keyboard layout : US (และกด Add layout ด้วย)" },
+    { imageSrc: "/images/test62.png", heading: "หัวข้อ Second keyboard layout : Thai" },
+    { imageSrc: "/images/test63.png", heading: "เลือกเป็น Thai Kedmanee" },
+    { imageSrc: "/images/test64.png", heading: "Name your PC: ใส่ชื่อจริงจุดนามสกุลสามตัว เช่น Cheewin.chu" },
+    { imageSrc: "/images/test65.png", heading: "หัวข้อ Privacy: ติ๊กทุกหัวข้อ" },
   ];
 
   const downloadPDF = async () => {
@@ -40,38 +40,23 @@ const NotebookEbook = () => {
 
     for (let i = 0; i < pages.length; i++) {
       book.turnToPage(i);
-      await new Promise((r) => setTimeout(r, 200));
+      await new Promise((r) => setTimeout(r, 200)); // Wait for the page to load
 
       const page = book.getPage(i);
-      if (!page || !page.element) continue;
+      if (!page || !page.element) {
+        console.error(`ไม่พบองค์ประกอบของหน้าที่ ${i + 1}`);
+        continue;
+      }
 
-      const originalCanvas = await html2canvas(page.element, {
+      const canvas = await html2canvas(page.element, {
         scale: 2,
         useCORS: true,
         backgroundColor: "#fff",
       });
 
-      const cropHeight = originalCanvas.height - 4;
-      const croppedCanvas = document.createElement("canvas");
-      croppedCanvas.width = originalCanvas.width;
-      croppedCanvas.height = cropHeight;
-
-      const ctx = croppedCanvas.getContext("2d");
-      ctx.drawImage(
-        originalCanvas,
-        0,
-        0,
-        originalCanvas.width,
-        cropHeight,
-        0,
-        0,
-        originalCanvas.width,
-        cropHeight
-      );
-
-      const imgData = croppedCanvas.toDataURL("image/png");
+      const imgData = canvas.toDataURL("image/png");
       const imgWidth = 210;
-      const imgHeight = (cropHeight * imgWidth) / originalCanvas.width;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       if (i > 0) pdf.addPage();
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
@@ -96,20 +81,66 @@ const NotebookEbook = () => {
                 className="page"
                 style={{
                   display: "flex",
-                  justifyContent: "center",
+                  flexDirection: "column", // Arrange items vertically
+                  justifyContent: "flex-start", // Align content to the top
                   alignItems: "center",
                   position: "relative",
+                  paddingTop: page.headings || page.heading ? '20px' : '10px', // Add top padding if there are headings
                 }}
               >
+                {/* Render multiple headings if 'headings' array exists */}
+                {page.headings && page.headings.map((heading, headingIndex) => (
+                  <div
+                    key={headingIndex}
+                    style={{
+                      backgroundColor: '#6495ED',
+                      border: '2px solid #0000CD',
+                      borderRadius: '5px',
+                      padding: '15px 20px',
+                      marginBottom: '10px',
+                      fontFamily: "'Arial', sans-serif",
+                      fontWeight: 'bold',
+                      color: 'black',
+                      fontSize: '1.2em',
+                      display: 'inline-block',
+                      textAlign: 'center',
+                      width: '80%', // Adjust width as needed
+                    }}
+                  >
+                    {heading}
+                  </div>
+                ))}
+                {/* Render single heading if 'heading' string exists and 'headings' array does not */}
+                {!page.headings && page.heading && (
+                  <div style={{
+                    backgroundColor: '#6495ED',
+                    border: '2px solid #0000CD',
+                    borderRadius: '5px',
+                    padding: '15px 20px',
+                    marginBottom: '10px',
+                    fontFamily: "'Arial', sans-serif",
+                    fontWeight: 'bold',
+                    color: 'black',
+                    fontSize: '1.2em',
+                    display: 'inline-block',
+                    textAlign: 'center',
+                    width: '80%', // Adjust width as needed
+                  }}>
+                    {page.heading}
+                  </div>
+                )}
                 {page.imageSrc && (
                   <img
                     src={page.imageSrc}
                     alt={`Page ${index + 1}`}
+                    className="page-image"
                     style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      borderRadius: "0",
+                      width: '90%', // Adjust width as needed
+                      height: 'auto', // Allow height to adjust proportionally
+                      maxHeight: page.headings || page.heading ? 'calc(100% - 60px)' : '100%', // Adjust max height based on headings
+                      objectFit: 'contain',
+                      borderRadius: '0px',
+                      marginTop: page.headings || page.heading ? '10px' : '0', // Add margin if there are headings
                     }}
                   />
                 )}

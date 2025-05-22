@@ -3,13 +3,15 @@ import HTMLFlipBook from "react-pageflip";
 import LayoutComponent from "../components/Layout";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import "./Ebook.css"; // Assuming you have a shared CSS file for ebook styles
 
 function Initial() {
   const pages = [
     { imageSrc: "/images/14.png" },
-    { imageSrc: "/images/15.png" },
-    { imageSrc: "/images/16.png" },
-    { imageSrc: "/images/17.png" }
+    { imageSrc: "/images/test17.png", heading: "ไปที่ช่อง Search" },
+    { imageSrc: "/images/test18.png", heading: "พิมพ์คำว่า Default apps" },
+    { imageSrc: "/images/test19.png", heading: "หาแอพ Google Chrome" },
+    { imageSrc: "/images/test20.png", heading: "ติ๊กคำว่า Set default" },
   ];
 
   const flipbookRef = useRef();
@@ -26,7 +28,7 @@ function Initial() {
 
     for (let i = 0; i < pages.length; i++) {
       book.turnToPage(i);
-      await new Promise((r) => setTimeout(r, 100)); // รอให้หน้าโหลดเสร็จ
+      await new Promise((r) => setTimeout(r, 100)); // Wait for the page to load
 
       const page = book.getPage(i);
       if (!page || !page.element) {
@@ -67,21 +69,66 @@ function Initial() {
                 className="page"
                 style={{
                   display: 'flex',
-                  justifyContent: 'center',
+                  flexDirection: 'column', // Arrange items vertically
+                  justifyContent: 'flex-start', // Align content to the top
                   alignItems: 'center',
                   position: "relative",
+                  paddingTop: page.headings || page.heading ? '20px' : '10px', // Add top padding if there are headings
                 }}
               >
+                {/* Render multiple headings if 'headings' array exists */}
+                {page.headings && page.headings.map((heading, headingIndex) => (
+                  <div
+                    key={headingIndex}
+                    style={{
+                      backgroundColor: '#FF66CC',
+                      border: '2px solid #9900CC',
+                      borderRadius: '5px',
+                      padding: '15px 20px',
+                      marginBottom: '10px',
+                      fontFamily: "'Arial', sans-serif",
+                      fontWeight: 'bold',
+                      color: 'black',
+                      fontSize: '1.24em',
+                      display: 'inline-block',
+                      textAlign: 'center',
+                      width: '80%', // Adjust width as needed
+                    }}
+                  >
+                    {heading}
+                  </div>
+                ))}
+                {/* Render single heading if 'heading' string exists and 'headings' array does not */}
+                {!page.headings && page.heading && (
+                  <div style={{
+                    backgroundColor: '#FF66CC',
+                    border: '2px solid #9900CC',
+                    borderRadius: '5px',
+                    padding: '15px 20px',
+                    marginBottom: '10px',
+                    fontFamily: "'Arial', sans-serif",
+                    fontWeight: 'bold',
+                    color: 'black',
+                    fontSize: '1.24em',
+                    display: 'inline-block',
+                    textAlign: 'center',
+                    width: '80%', // Adjust width as needed
+                  }}>
+                    {page.heading}
+                  </div>
+                )}
                 {page.imageSrc && (
                   <img
                     src={page.imageSrc}
                     alt={`Page ${index + 1}`}
                     className="page-image"
                     style={{
-                      width: '100%',
-                      height: '100%',
+                      width: '90%', // Adjust width as needed
+                      height: 'auto', // Allow height to adjust proportionally
+                      maxHeight: page.headings || page.heading ? 'calc(100% - 60px)' : '100%', // Adjust max height based on headings
                       objectFit: 'contain',
                       borderRadius: '0px',
+                      marginTop: page.headings || page.heading ? '10px' : '0', // Add margin if there are headings
                     }}
                   />
                 )}

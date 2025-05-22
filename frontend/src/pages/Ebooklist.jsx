@@ -3,7 +3,7 @@ import "./Ebooklist.css";
 import LayoutComponent from "../components/Layout";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { MdLanguage, MdAccessTime, MdPolicy, MdSecurity, MdStorage} from "react-icons/md";
-import { FaWindows, FaTools, FaPrint } from "react-icons/fa";
+import { FaWindows,FaPrint } from "react-icons/fa";
 import { BsBoxSeam } from "react-icons/bs";
 import { GiArchiveRegister } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,6 @@ const categories = [
   "Initial",
   "Policy",
   "Security",
-  "Maintenance",
   "Storage",
   "Windows",
   "Brother",
@@ -37,8 +36,7 @@ const getCategoryIcon = (cat) => {
       return <MdPolicy />;
     case "Security":
       return <MdSecurity />;
-    case "Maintenance":
-      return <FaTools />;
+
     case "Storage":
       return <MdStorage />;
     case "Windows":
@@ -98,34 +96,27 @@ const ebooks = [
   },
   {
     id: 7,
-    title: "Maintenance Guide",
-    description: "คู่มือการบำรุงรักษา",
-    category: "Maintenance",
-    path: "/maintenance", // เพิ่ม path ที่นี่
-  },
-  {
-    id: 8,
     title: "Storage Management",
     description: "การจัดการพื้นที่จัดเก็บข้อมูล",
     category: "Storage",
     path: "/storage", // เพิ่ม path ที่นี่
   },
   {
-    id: 9,
+    id: 8,
     title: "Install Windows",
-    description: "ทิปและเทคนิคสำหรับ Windows",
+    description: "การลง Windows เบื้องต้น",
     category: "Windows",
     path: "/notebook-ebook", // เพิ่ม path ที่นี่
   },
   {
-    id: 10,
+    id: 9,
     title: "Brother Printer",
     description: "คู่มือการใช้งานเครื่องพิมพ์ Brother",
     category: "Brother",
     path: "/brother-ebook", // เพิ่ม path ที่นี่
   },
   {
-    id: 11,
+    id: 10,
     title: "Epson Printer",
     description: "คู่มือการใช้งานเครื่องพิมพ์ Epson",
     category: "Epson",

@@ -8,9 +8,9 @@ import "./Ebook.css"; // Optional: You can create a separate CSS file for stylin
 function Security() {
   const pages = [
     { imageSrc: "/images/47.png" },
-    { imageSrc: "/images/48.png" },
-    { imageSrc: "/images/49.png" },
-    { imageSrc: "/images/50.png" },
+    { imageSrc: "/images/test27.png", heading: "ใช้รหัสผ่านที่คาดเดาอยาก" },
+    { imageSrc: "/images/test28.png", heading: "อัปเดตซอฟต์แวร์สม่ำเสมอ" },
+    { imageSrc: "/images/test29.png", heading: "เปิดใช้งาน Firewall & network protection"},
   ];
 
   const flipbookRef = useRef();
@@ -27,7 +27,7 @@ function Security() {
 
     for (let i = 0; i < pages.length; i++) {
       book.turnToPage(i);
-      await new Promise((r) => setTimeout(r, 100)); // รอให้หน้าโหลดเสร็จ
+      await new Promise((r) => setTimeout(r, 100)); // Wait for the page to load
 
       const page = book.getPage(i);
       if (!page || !page.element) {
@@ -56,53 +56,99 @@ function Security() {
     <LayoutComponent>
       <div className="ebook-container">
         <div className="content">
-        <div className="controls" style={{ marginBottom: "1rem" }}>
-          <button onClick={() => flipbookRef.current.pageFlip().flipPrev()}>
-            ⬅ Previous
-          </button>
-          <button onClick={downloadPDF}>📥 Download PDF</button>
-          <button onClick={() => flipbookRef.current.pageFlip().flipNext()}>
-            Next ➡
-          </button>
-        </div>
-        <HTMLFlipBook width={600} height={800} className="flipbook" ref={flipbookRef}>
-          {pages.map((page, index) => (
-            <div
-              key={index}
-              className="page"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "relative",
-              }}
-            >
-              {page.imageSrc && (
-                <img
-                  src={page.imageSrc}
-                  alt={`Page ${index + 1}`}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain",
-                    borderRadius: "0",
-                  }}
-                />
-              )}
+          <div className="controls" style={{ marginBottom: "1rem" }}>
+            <button onClick={() => flipbookRef.current.pageFlip().flipPrev()}>
+              ⬅ Previous
+            </button>
+            <button onClick={downloadPDF}>📥 Download PDF</button>
+            <button onClick={() => flipbookRef.current.pageFlip().flipNext()}>
+              Next ➡
+            </button>
+          </div>
+          <HTMLFlipBook width={600} height={800} className="flipbook" ref={flipbookRef}>
+            {pages.map((page, index) => (
               <div
-                className="page-number"
+                key={index}
+                className="page"
                 style={{
-                  position: "absolute",
-                  bottom: 10,
-                  right: 20,
-                  fontSize: "14px",
+                  display: "flex",
+                  flexDirection: "column", // Arrange items vertically
+                  justifyContent: "flex-start", // Align content to the top
+                  alignItems: "center",
+                  position: "relative",
+                  paddingTop: page.headings || page.heading ? '20px' : '10px', // Add top padding if there are headings
                 }}
               >
-                📄 {index + 1}
+                {/* Render multiple headings if 'headings' array exists */}
+                {page.headings && page.headings.map((heading, headingIndex) => (
+                  <div
+                    key={headingIndex}
+                    style={{
+                      backgroundColor: '#FF99FF',
+                      border: '2px solid #FF00CC',
+                      borderRadius: '5px',
+                      padding: '15px 20px',
+                      marginBottom: '10px',
+                      fontFamily: "'Arial', sans-serif",
+                      fontWeight: 'bold',
+                      color: 'black',
+                      fontSize: '1.24em',
+                      display: 'inline-block',
+                      textAlign: 'center',
+                      width: '80%', // Adjust width as needed
+                    }}
+                  >
+                    {heading}
+                  </div>
+                ))}
+                {/* Render single heading if 'heading' string exists and 'headings' array does not */}
+                {!page.headings && page.heading && (
+                  <div style={{
+                    backgroundColor: '#FF99FF',
+                    border: '2px solid #FF00CC',
+                    borderRadius: '5px',
+                    padding: '15px 20px',
+                    marginBottom: '10px',
+                    fontFamily: "'Arial', sans-serif",
+                    fontWeight: 'bold',
+                    color: 'black',
+                    fontSize: '1.24em',
+                    display: 'inline-block',
+                    textAlign: 'center',
+                    width: '80%', // Adjust width as needed
+                  }}>
+                    {page.heading}
+                  </div>
+                )}
+                {page.imageSrc && (
+                  <img
+                    src={page.imageSrc}
+                    alt={`Page ${index + 1}`}
+                    className="page-image"
+                    style={{
+                      width: '90%', // Adjust width as needed
+                      height: 'auto', // Allow height to adjust proportionally
+                      maxHeight: page.headings || page.heading ? 'calc(100% - 60px)' : '100%', // Adjust max height based on headings
+                      objectFit: 'contain',
+                      borderRadius: '0px',
+                      marginTop: page.headings || page.heading ? '10px' : '0', // Add margin if there are headings
+                    }}
+                  />
+                )}
+                <div
+                  className="page-number"
+                  style={{
+                    position: "absolute",
+                    bottom: 10,
+                    right: 20,
+                    fontSize: "14px",
+                  }}
+                >
+                  📄 {index + 1}
+                </div>
               </div>
-            </div>
-          ))}
-        </HTMLFlipBook>
+            ))}
+          </HTMLFlipBook>
         </div>
       </div>
     </LayoutComponent>

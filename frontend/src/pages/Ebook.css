@@ -88,7 +88,7 @@
   cursor: pointer;
   box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.3s ease;
-  z-index: 1000; /* ให้ z-index สูงๆ เพื่อให้ปุ่มอยู่เหนือองค์ประกอบอื่น */
+
 }
 
 .download-btn:hover {
