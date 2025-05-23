@@ -12,13 +12,13 @@
   }
 
   .it-staff-manager {
-  color: #3498db;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 1.5rem; /* เท่ากับ mb-6 */
-  font-size: 1.875rem; /* เท่ากับ text-3xl */
-}
+    color: #3498db;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem; /* เท่ากับ mb-6 */
+    font-size: 1.875rem; /* เท่ากับ text-3xl */
+  }
 
   
   .alert-box {

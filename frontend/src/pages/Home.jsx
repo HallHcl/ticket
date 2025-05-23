@@ -66,13 +66,6 @@ const Home = () => {
     path: "/security",
   },
   {
-    id: 7,
-    title: "Maintenance Guide",
-    description: "คู่มือการบำรุงรักษา",
-    category: "Maintenance",
-    path: "/maintenance",
-  },
-  {
     id: 8,
     title: "Storage Management",
     description: "การจัดการพื้นที่จัดเก็บข้อมูล",

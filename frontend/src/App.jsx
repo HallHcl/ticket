@@ -42,7 +42,7 @@ const App = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 100); // แสดง Preloader 2 วินาที
+    }, 500); // แสดง Preloader 2 วินาที
 
     return () => clearTimeout(timer);
   }, []);

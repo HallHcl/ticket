@@ -12,8 +12,8 @@ function JoinDomain() {
     { imageSrc: "/images/test22.png", heading: "เลือกที่ System" },
     { imageSrc: "/images/test23.png", heading: "เลือกที่ About" },
     { imageSrc: "/images/test24.png", heading: "กดที่ Domain or workgroup" },
-    { imageSrc: "/images/test25.png", heading: "กดปุ่่ม Change" },
-    { imageSrc: "/images/test26.png", heading: "กดที่ช่อง Domain และใส่โดเมนบริษัทเข้าไป" },
+    { imageSrc: "/images/test25.png", heading: "กดปุ่ม Change" },
+    { imageSrc: "/images/test26.png", heading: "กดที่ช่อง Domain และใส่โดเมนบริษัทที่ตรงนี้" },
   ];
 
   const flipbookRef = useRef();
@@ -46,7 +46,7 @@ function JoinDomain() {
 
       const imgData = canvas.toDataURL("image/png");
       const imgWidth = 210;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+       const imgHeight = 297;
 
       if (i > 0) pdf.addPage();
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);

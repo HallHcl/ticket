@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { MdLanguage, MdAccessTime, MdPolicy, MdSecurity, MdStorage } from "react-icons/md";
-import { FaWindows, FaTools, FaPrint } from "react-icons/fa";
+import { FaWindows, FaPrint } from "react-icons/fa";
 import { GiArchiveRegister } from "react-icons/gi";
 import { BsBoxSeam } from "react-icons/bs";
 import Carousel from "react-bootstrap/Carousel";
@@ -31,8 +31,6 @@ const getCategoryIcon = (cat) => {
       return <MdPolicy />;
     case "Security":
       return <MdSecurity />;
-    case "Maintenance":
-      return <FaTools />;
     case "Storage":
       return <MdStorage />;
     case "Windows":

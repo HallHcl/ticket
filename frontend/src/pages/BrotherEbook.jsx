@@ -46,7 +46,7 @@ const BrotherEbook = () => {
 
       const imgData = canvas.toDataURL("image/png");
       const imgWidth = 210;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const imgHeight = 297;
 
       if (i > 0) pdf.addPage();
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);

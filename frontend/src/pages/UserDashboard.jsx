@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import Layout from '../components/Layout';
@@ -19,6 +19,8 @@ const UserDashboard = () => {
   const [branchCodes, setBranchCodes] = useState([]);
   const [showBranchDropdown, setShowBranchDropdown] = useState(false);
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -58,6 +60,9 @@ const UserDashboard = () => {
   const handleFileChange = (e) => {
     setAttachment(e.target.files[0]);
   };
+
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -99,6 +104,11 @@ const UserDashboard = () => {
       setMessage('เกิดข้อผิดพลาดในการส่งข้อมูล');
       console.error('Error submitting ticket:', error);
       toast.error('เกิดข้อผิดพลาดในการส่ง Ticket!', { position: 'top-center' });
+    }
+
+    setAttachment(null);  // เคลียร์ state
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''; // ✅ เคลียร์ input file
     }
   };
 
@@ -238,10 +248,11 @@ const UserDashboard = () => {
 
             <div className="input-group">
               <label>แนบไฟล์ (ถ้ามี)</label>
-              <input
-                type="file"
-                onChange={handleFileChange}
-              />
+               <input
+        type="file"
+        onChange={handleFileChange}
+        ref={fileInputRef}  // ✅ Step 3
+      />
             </div>
 
             <button type="submit">ส่ง Ticket</button>

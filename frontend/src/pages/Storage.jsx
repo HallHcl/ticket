@@ -44,7 +44,7 @@ function Storage() {
 
       const imgData = canvas.toDataURL("image/png");
       const imgWidth = 210;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const imgHeight = 297;
 
       if (i > 0) pdf.addPage();
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
@@ -57,7 +57,7 @@ function Storage() {
     <LayoutComponent>
       <div className="ebook-container">
         <div className="content">
-                <div className="controls" style={{ marginBottom: "1rem", display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <div className="controls" style={{ marginBottom: "1rem", display: 'flex', gap: '8px', alignItems: 'center' }}>
             <button onClick={() => flipbookRef.current.pageFlip().flipPrev()}>⬅ Previous</button>
             <button onClick={downloadPDF}>📥 Download PDF</button>
             <button onClick={() => flipbookRef.current.pageFlip().flipNext()}>Next ➡</button>
