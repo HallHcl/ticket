@@ -152,16 +152,17 @@ const EbookAll = () => {
         <div style={{ marginBottom: "2rem" }}>
           <ul className="category-list">
             <li
-  className={`category-item${selectedCategory === "" ? " active" : ""}`}
-  onClick={() => setSelectedCategory("")}
-  style={{ cursor: "pointer" }}
->
-  <span className="category-icon" style={{ fontSize: "1.5rem" }}>
-    <BsBoxSeam />
-  </span>
-  <span className="category-label">All</span>
-</li>
-            {categories.map((cat) => (
+              className={`category-item${selectedCategory === "" ? " active" : ""}`}
+              onClick={() => setSelectedCategory("")}
+              style={{ cursor: "pointer" }}
+            >
+              <span className="category-icon" style={{ fontSize: "1.5rem" }}>
+                <BsBoxSeam />
+              </span>
+              <span className="category-label">All</span>
+            </li>
+            {[...categories].sort().map((cat) => (
+
               <li
                 key={cat}
                 className={`category-item${selectedCategory === cat ? " active" : ""}`}
@@ -178,7 +179,10 @@ const EbookAll = () => {
         </div>
         <h2 className="ebook-section-title">All E-book</h2>
         <div className="ebook-simple-list">
-          {filteredEbooks.map((ebook) => (
+          {filteredEbooks
+  .sort((a, b) => a.title.localeCompare(b.title))
+  .map((ebook) => (
+
             <div
           key={ebook.id}
           className="ebook-simple-item"

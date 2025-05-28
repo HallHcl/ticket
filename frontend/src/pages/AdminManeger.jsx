@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavAdmin from '../components/NavbarAdmin';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './AdminManeger.css';
 import { jwtDecode } from 'jwt-decode';
 
@@ -17,11 +19,10 @@ const AdminManager = () => {
   });
   const [showAlert, setShowAlert] = useState(false);
   const [staffToDelete, setStaffToDelete] = useState(null);
-  const [isAuthorized, setIsAuthorized] = useState(false); // สถานะการเข้าถึง
-  const [loading, setLoading] = useState(true); // สถานะการโหลดข้อมูล
-  const [error, setError] = useState(''); // ข้อความ error
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Effect สำหรับการตรวจสอบ token และสิทธิ์การเข้าถึง
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
@@ -29,7 +30,7 @@ const AdminManager = () => {
         const decoded = jwtDecode(token);
         if (decoded.role === 'admin') {
           setIsAuthorized(true);
-          fetchStaff(token); // เรียกฟังก์ชันเพื่อดึงข้อมูล staff
+          fetchStaff(token);
         } else {
           setError('Access denied: Admin privileges required');
           setLoading(false);
@@ -44,7 +45,6 @@ const AdminManager = () => {
     }
   }, []);
 
-  // ดึงข้อมูล staff
   const fetchStaff = async (token) => {
     try {
       const response = await axios.get('http://localhost:5000/api/it-staff', {
@@ -55,6 +55,7 @@ const AdminManager = () => {
     } catch (error) {
       setError('Error fetching staff');
       setLoading(false);
+      toast.error('ไม่สามารถดึงข้อมูลพนักงานได้');
     }
   };
 
@@ -63,6 +64,7 @@ const AdminManager = () => {
       <div className="loading-container">
         <div className="loading-spinner"></div>
         <p>Loading dashboard...</p>
+        <ToastContainer />
       </div>
     );
   }
@@ -73,6 +75,7 @@ const AdminManager = () => {
         <div className="error-icon">⚠️</div>
         <h3>Error</h3>
         <p>{error}</p>
+        <ToastContainer />
       </div>
     );
   }
@@ -83,11 +86,11 @@ const AdminManager = () => {
         <div className="access-denied-icon">🔒</div>
         <h2>Access Denied</h2>
         <p>You must be an admin to view this page.</p>
+        <ToastContainer />
       </div>
     );
   }
 
-  // ฟังก์ชันการจัดการข้อมูล staff
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'profilePic') {
@@ -109,10 +112,12 @@ const AdminManager = () => {
         await axios.put(`http://localhost:5000/api/it-staff/${newStaff._id}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
+        toast.success('Staff details updated successfully.');
       } else {
         await axios.post('http://localhost:5000/api/it-staff', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
+        toast.success('Staff saved successfully!');
       }
 
       setNewStaff({
@@ -125,9 +130,10 @@ const AdminManager = () => {
         profilePic: null,
       });
 
-      fetchStaff(localStorage.getItem('authToken')); // รีเฟรชข้อมูลหลังจากบันทึก
+      fetchStaff(localStorage.getItem('authToken'));
     } catch (error) {
       console.error('Error saving staff data', error);
+      toast.error('ไม่สามารถบันทึกข้อมูลพนักงานได้');
     }
   };
 
@@ -139,15 +145,17 @@ const AdminManager = () => {
   const handleConfirmDelete = async () => {
     try {
       await axios.delete(`http://localhost:5000/api/it-staff/${staffToDelete}`);
-      fetchStaff(localStorage.getItem('authToken')); // รีเฟรชข้อมูลหลังจากลบ
-      setShowAlert(false); // ปิด alert
+      toast.success('Staff deleted successfully');
+      fetchStaff(localStorage.getItem('authToken'));
+      setShowAlert(false);
     } catch (error) {
       console.error('Error deleting staff', error);
+      toast.error('ไม่สามารถลบข้อมูลพนักงานได้');
     }
   };
 
   const handleCancelDelete = () => {
-    setShowAlert(false); // ปิด alert
+    setShowAlert(false);
   };
 
   const handleEdit = (staffMember) => {
@@ -165,6 +173,24 @@ const AdminManager = () => {
 
   return (
     <NavAdmin>
+      <ToastContainer
+  autoClose={3000}
+  hideProgressBar={false}
+  closeOnClick
+  pauseOnHover
+  draggable
+  pauseOnFocusLoss
+  position="top-center"
+  toastClassName="centered-toast"
+  containerStyle={{
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: 9999,
+  }}
+/>
+
       {/* Main Container */}
       <div className="p-8 bg-gray-50 min-h-screen">
         <div className="it-staff-manager">

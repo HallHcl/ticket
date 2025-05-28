@@ -46,7 +46,7 @@ function JoinDomain() {
 
       const imgData = canvas.toDataURL("image/png");
       const imgWidth = 210;
-       const imgHeight = 297;
+      const imgHeight = 297;
 
       if (i > 0) pdf.addPage();
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
